@@ -4,17 +4,31 @@ const {
     registerUser,
     loginUser,
     updateUserProfile, 
-    deleteUserProfile} = require('../Controllers/UserController');
-const { protect } = require('../Middlewares/Auth');
+    deleteUserProfile,
+    changeUserPassword,
+    getLikesRecipes,
+    addLikedRecipes,
+    deleteLikerecipes,
+    getUsers,
+    deleteUser} = require('../Controllers/UserController');
+const { protect, admin } = require('../Middlewares/Auth');
 
 // Public
-router.post('/', registerUser)
-router.post('/login', loginUser)
+router.post('/', registerUser);
+router.post('/login', loginUser);
 
 //Private
-router.put('/', protect, updateUserProfile)
-router.delete('/', protect, deleteUserProfile)
+router.put('/', protect, updateUserProfile);
+router.put('/password', protect, changeUserPassword);
+router.delete('/', protect, deleteUserProfile);
 
+router.get('/favorites', protect, getLikesRecipes);
+router.post('/favorites', protect, addLikedRecipes);
+router.delete('/favorites', protect, deleteLikerecipes);
+
+//ADMIN
+router.get('/', protect, admin, getUsers);
+router.get('/:id', protect, admin, deleteUser);
 
 
 module.exports = router;
