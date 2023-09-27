@@ -16,10 +16,12 @@ const registerUser = asyncHandler(async (req, res) => {
         //Hash Password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
+        const isActive = true;
 
         const user = await User.create({
             fullName,
             email,
+            isActive,
             password: hashedPassword,
             image,
         });
@@ -94,8 +96,30 @@ const updateUserProfile = asyncHandler(async (req, res) =>{
     }
 }); 
 
+const deleteUserProfile = asyncHandler(async(req, res)=>{
+    try {
+        const user = User.findById(req.user._id);
+
+        if(user){
+            if(user.isAdmin){
+                res.status(400);
+                throw new Error('No puedes desactivar usuarios administradores')
+            } 
+            user.isActive = false;
+            await user.save();
+            res.json({message: 'Usuario desactivado con éxito'})
+        }else{
+            res.status(404);
+            throw new Error('Usuario no encontrado')
+        }
+    } catch (error) {
+        res.status(400).json({message: error.message})
+    }
+})
+
 module.exports = {
     registerUser,
     loginUser,
     updateUserProfile,
+    deleteUserProfile,
 };

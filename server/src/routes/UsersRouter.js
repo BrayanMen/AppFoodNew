@@ -3,7 +3,8 @@ const router = Router();
 const {
     registerUser,
     loginUser,
-    updateUserProfile } = require('../Controllers/UserController');
+    updateUserProfile, 
+    deleteUserProfile} = require('../Controllers/UserController');
 const { protect } = require('../Middlewares/Auth');
 
 // Public
@@ -12,6 +13,8 @@ router.post('/login', loginUser)
 
 //Private
 router.put('/', protect, updateUserProfile)
+router.delete('/', protect, deleteUserProfile)
+
 
 
 module.exports = router;
