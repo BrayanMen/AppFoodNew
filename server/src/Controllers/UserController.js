@@ -8,20 +8,36 @@ const registerUser = asyncHandler(async (req, res) => {
     const { fullName, email, password, image } = req.body;
     try {
         const userExist = await User.findOne({ email })
-
+        
         if (userExist) {
-            throw new Error('Usuario Existente')
+            if(!userExist.isActive){
+                userExist.fullName= fullName,
+                userExist.password= await bcrypt.hash(password, 10),
+                userExist.image= image,
+                userExist.isActive = true,
+                await userExist.save();
+                
+                return res.status(200).json({
+                    _id: userExist.id,
+                    fullName: userExist.fullName,
+                    email: userExist.email,
+                    image: userExist.image,
+                    isAdmin: userExist.isAdmin,
+                    token: generateToken(userExist._id),
+                })
+            }else{
+                res.status(400).json({ message: 'El usuario ya está activo' });
+            }                
         }
 
         //Hash Password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
-        const isActive = true;
-
+        
         const user = await User.create({
             fullName,
             email,
-            isActive,
+            isActive: true,
             password: hashedPassword,
             image,
         });
@@ -50,7 +66,7 @@ const loginUser = asyncHandler(async (req, res) => {
     try {
         const user = await User.findOne({ email });
 
-        if (user && (await bcrypt.compare(password, user.password))) {
+        if (user && user.isActive &&(await bcrypt.compare(password, user.password))) {
             res.json({
                 _id: user.id,
                 fullName: user.fullName,
@@ -61,7 +77,7 @@ const loginUser = asyncHandler(async (req, res) => {
             });
         } else {
             res.status(401)
-            throw new Error("Correo o Contraseña Invalido")
+            throw new Error("Correo o Contraseña Inválidos")
         }
     } catch (error) {
         res.status(400).json({ message: error.message })
@@ -73,7 +89,13 @@ const updateUserProfile = asyncHandler(async (req, res) =>{
     const {fullName, email, image} = req.body;
     try {
         const user = await User.findById(req.user._id);
+        
         if(user){
+            if (email && !isValidEmail(email)) {
+                res.status(400);
+                throw new Error("Correo Electrónico Inválido");
+            }
+            //Update Email
             user.fullName = fullName || user.fullName;
             user.email = email || user.email;
             user.image = image || user.image;
@@ -95,6 +117,11 @@ const updateUserProfile = asyncHandler(async (req, res) =>{
         res.status(400).json({message: error.message})
     }
 }); 
+
+function isValidEmail(email) {
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return emailRegex.test(email);
+}
 
 const deleteUserProfile = asyncHandler(async(req, res)=>{
     try {
