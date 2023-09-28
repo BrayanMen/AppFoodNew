@@ -19,7 +19,6 @@ const getApiData = async () => {
                 diets: r.diets.map(diet => diet[0].toUpperCase() + diet.slice(1)).join(', '),
                 health_score: r.healthScore,
                 step_by_step: r.analyzedInstructions[0]?.steps.map((paso) => paso.step),
-                diets: r.diets,
             }
         });
         return apiInfo
