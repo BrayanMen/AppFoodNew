@@ -180,20 +180,27 @@ const getLikesRecipes = asyncHandler(async (req, res) => {
 
 const addLikedRecipes = asyncHandler(async (req, res) => {
     try {
-        const user = User.findById(req.user._id);
-        const recipe = Recipe.findById(req.recipe._id)
-        if (user) {
-            if (user.likedRecipes.includes(recipeId)) {
-                res.status(400);
-                throw new Error('Esta receta ya me gusta')
-            }
-            user.likedRecipes.push(recipeId);
-            await user.save();
-            res.status(200).json(user.likedRecipes)
-        } else {
-            res.status(404);
-            throw new Error('Receta no encontrada')
+        const userId = req.user._id;
+        const recipeId = req.recipe._id;
+
+        const [user, recipe] = await Promise.all([
+            User.findById(userId),
+            Recipe.findById(recipeId),
+        ]);
+
+        if (!user || !recipe) {
+            res.status(404).json({ message: 'Usuario o receta no encontrada' });
+            return;
         }
+
+        if (user.likedRecipes.includes(recipeId)) {
+            res.status(400).json({ message: 'Esta receta ya me gusta' });
+            return;
+        }
+        
+        user.likedRecipes.push(recipe);
+        await user.save();
+        res.status(200).json(user.likedRecipes)
     } catch (error) {
         res.status(400).json({ message: error.message })
     }
@@ -216,10 +223,10 @@ const deleteLikerecipes = asyncHandler(async (req, res) => {
 
 //ADMIN
 
-const getUsers = asyncHandler(async(req, res) => {
+const getUsers = asyncHandler(async (req, res) => {
     try {
         const users = User.find({});
-        if(users){
+        if (users) {
             res.status(200).send(users)
         }
     } catch (error) {
@@ -227,13 +234,13 @@ const getUsers = asyncHandler(async(req, res) => {
     }
 });
 
-const deleteUser =  asyncHandler(async(req, res) => {
+const deleteUser = asyncHandler(async (req, res) => {
     try {
         const user = User.findById(req.user._id)
-        if(user){
-            if(user.isAdmin){
+        if (user) {
+            if (user.isAdmin) {
                 res.status(400).send('No puedes eliminar un Usuario Administrador')
-            }else{
+            } else {
                 await user.remove();
                 res.json({ message: 'Usuario eliminado con éxito' })
             }
