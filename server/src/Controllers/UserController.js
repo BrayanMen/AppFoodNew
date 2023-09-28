@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler');
 const User = require('../Models/UserModel');
+const Recipe = require('../Models/RecipesModel');
 const bcrypt = require('bcryptjs');
 const { generateToken } = require('../Middlewares/Auth');
 
@@ -178,9 +179,9 @@ const getLikesRecipes = asyncHandler(async (req, res) => {
 });
 
 const addLikedRecipes = asyncHandler(async (req, res) => {
-    const { recipeId } = req.body;
     try {
         const user = User.findById(req.user._id);
+        const recipe = Recipe.findById(req.recipe._id)
         if (user) {
             if (user.likedRecipes.includes(recipeId)) {
                 res.status(400);
