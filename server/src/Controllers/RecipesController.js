@@ -204,6 +204,7 @@ const deleteRecipeById = async (req, res) => {
             res.status(404).json({message: 'Receta no encontrada'});
         }
 
+        // Verifica si el usuario es administrador o el creador de la receta
         if (req.user.isAdmin || recipeDelete.createdBy.equals(userId)) {
             await recipeDelete.remove();
             return res.status(200).json({ message: 'Receta eliminada correctamente' });
