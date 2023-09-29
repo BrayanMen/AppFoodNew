@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config()
 const mongoose = require('mongoose');
 const MONGO_URI  = 'mongodb+srv://foodappnew:foodapp1@cluster1.69jajwv.mongodb.net/Cluster1?retryWrites=true&w=majority';
 
