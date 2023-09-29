@@ -7,6 +7,7 @@ const morgan = require("morgan");
 const routes = require("./routes/index.js");
 const connectDB  = require("./config/db.js");
 const errorHandler = require('./Middlewares/errorMiddelware.js');
+const fillDatabase = require('./helpers/initializeDatabase.js');
 
 const server = express();
 
@@ -27,8 +28,17 @@ server.use((req, res, next) => {
 server.use('/', routes);
 
 //DB
-connectDB();
-
+connectDB().then(() => {
+  console.log('Conexión a la base de datos establecida.');
+  // Llena la base de datos una vez
+  return fillDatabase();
+})
+.then(() => {
+  console.log('Base de datos inicializada correctamente.');
+})
+.catch((error) => {
+  console.error('Error al iniciar la aplicación:', error.message);
+});
 //Errors
 server.use(errorHandler);
 

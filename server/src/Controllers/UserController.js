@@ -204,7 +204,7 @@ const addLikedRecipes = asyncHandler(async (req, res) => {
     } catch (error) {
         res.status(400).json({ message: error.message })
     }
-})
+});
 
 const deleteLikerecipes = asyncHandler(async (req, res) => {
     try {
