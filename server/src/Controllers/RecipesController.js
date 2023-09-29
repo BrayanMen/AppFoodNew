@@ -1,6 +1,6 @@
 const Diet = require("../Models/DietModel");
 const Recipe = require("../Models/RecipesModel");
-const { getAllInfo, getIdInfoDb, getIdInfoApi } = require("../helpers");
+const { getAllInfo, getIdInfoDb, getIdInfoApi, formatDiets } = require("../helpers");
 
 //GETS "/RECIPES"
 const getAllRecipes = async (req, res, next) => {
@@ -82,9 +82,7 @@ const createNewRecipe = async (req, res, next) => {
             return res.status(400).json({ message: 'La reseña de la receta es obligatorio' });
         }
 
-        const imageValidate = image
-            ? image
-            : "https://static.educalingo.com/img/en/800/food.jpg";
+        const imageValidate = image || "https://static.educalingo.com/img/en/800/food.jpg";
 
         const recipeExist = await Recipe.findById({ $or: [{ name }, { _id: req.recipe._id || req.recipe.id }] })
         if (recipeExist) {
@@ -105,6 +103,7 @@ const createNewRecipe = async (req, res, next) => {
             const dietIds = [];
             for (const dietName of diets) {
                 const existingDiet = await Diet.findOne({ name: dietName });
+                // let dietFormat = formatDiets(existingDiet)
                 if (existingDiet) {
                     dietIds.push(existingDiet._id);
                 } else {
@@ -135,7 +134,7 @@ const createNewRecipe = async (req, res, next) => {
         return res.status(500).json({ message: 'Error en el servidor' });
     }
 }
-//PUT "/RECIPE/EDIT"
+//PUT  protect "/RECIPE/EDIT"
 const editRecipe = async (req, res, next) => {
     const { _id, id } = req.params;
     const {
@@ -193,7 +192,7 @@ const editRecipe = async (req, res, next) => {
     }
 };
 
-//DELETE "/RECIPE"
+//DELETE protect "/RECIPE"
 const deleteRecipeById = async (req, res) => {
     const { _id, id } = req.params;
     const userId = req.user._id; 

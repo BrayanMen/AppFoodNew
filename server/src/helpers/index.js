@@ -97,4 +97,5 @@ module.exports = {
     getAllInfo,
     getIdInfoApi,
     getIdInfoDb,
+    formatDiets,
 };
