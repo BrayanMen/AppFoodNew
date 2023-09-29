@@ -9,8 +9,8 @@ const getAllRecipes = async (req, res, next) => {
         const allInfo = await getAllInfo();
 
         if (!name && !healthScore) {
-            return res.status(200).send(allInfo)  
-        } 
+            return res.status(200).send(allInfo)
+        }
         const filteredData = allInfo.filter((recipe) => {
             const lowerName = name ? name.toString().toLowerCase() : "";
             const matchName = name ? recipe.name.toLowerCase().includes(lowerName) : true;
@@ -52,7 +52,7 @@ const getRecipeById = async (req, res, next) => {
                     step_by_step: idApi.data.analyzedInstructions[0]?.steps.map((paso) => paso.step),
                 }
                 return res.status(200).json(recipeDetail);
-            }else{
+            } else {
                 return res.status(404).json({ message: 'Receta no encontrada' });
             }
         }
@@ -60,7 +60,7 @@ const getRecipeById = async (req, res, next) => {
         res.status(500).json({ message: 'Error en el servidor' });
     }
 }
-//POST "/RECIPE"
+//POST  protect "/RECIPE"
 const createNewRecipe = async (req, res, next) => {
     try {
         const {
@@ -73,18 +73,32 @@ const createNewRecipe = async (req, res, next) => {
             diets,
         } = req.body;
 
+        const createdBy = req.user._id;
+
+        if (!name) {
+            return res.status(400).json({ message: 'El nombre de la receta es obligatorio' });
+        }
+        if (!summary) {
+            return res.status(400).json({ message: 'La reseña de la receta es obligatorio' });
+        }
+
+        const imageValidate = image
+            ? image
+            : "https://static.educalingo.com/img/en/800/food.jpg";
+
         const recipeExist = await Recipe.findById({ $or: [{ name }, { _id: req.recipe._id || req.recipe.id }] })
-        if(recipeExist){
-            res.status(201).send({message: 'Ya existe esta receta'})
+        if (recipeExist) {
+            res.status(400).send({ message: 'Ya existe esta receta' })
         }
 
         const newRecipes = new Recipe({
             name,
             summary,
-            image,
+            image: imageValidate,
             health_score,
             step_by_step,
-            createdInDb
+            createdBy,
+            createdInDb,
         });
 
         if (diets && diets.length > 0) {
@@ -93,7 +107,7 @@ const createNewRecipe = async (req, res, next) => {
                 const existingDiet = await Diet.findOne({ name: dietName });
                 if (existingDiet) {
                     dietIds.push(existingDiet._id);
-                }else{
+                } else {
                     console.log(`La dieta "${dietName}" no existe en la base de datos.`);
                 }
             }
@@ -102,28 +116,110 @@ const createNewRecipe = async (req, res, next) => {
 
         await newRecipes.save();
 
-        if(newRecipes){
+        if (newRecipes) {
             res.status(201).json({
                 _id: newRecipes.id,
                 name: newRecipes.name,
-                summary:newRecipes.summary,
+                summary: newRecipes.summary,
                 image: newRecipes.image,
                 health_score: newRecipes.health_score,
                 step_by_step: newRecipes.step_by_step,
                 createdInDb: newRecipes.createdInDb,
             })
-        }else{
+        } else {
             return res.status(400).json({ message: 'Receta Invalida' });
         }
 
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ message: 'Error en el servidor' }); 
+        return res.status(500).json({ message: 'Error en el servidor' });
     }
 }
+//PUT "/RECIPE/EDIT"
+const editRecipe = async (req, res, next) => {
+    const { _id, id } = req.params;
+    const {
+        name,
+        summary,
+        image,
+        health_score,
+        step_by_step,
+        createdInDb,
+        diets,
+    } = req.body;
+    try {
+        const recipeEdit = await Recipe.findById(_id || id);
+        if (!recipeEdit) {
+            return res.status(404).json({ message: 'Receta no encontrada' });
+        }
+        if (name) {
+            recipeEdit.name = name;
+        }
+        if (summary) {
+            recipeEdit.summary = summary;
+        }
+        if (image) {
+            recipeEdit.image = image;
+        }
+        if (health_score !== undefined) {
+            recipeEdit.health_score = health_score;
+        }
+        if (step_by_step) {
+            recipeEdit.step_by_step = step_by_step;
+        }
+        if (createdInDb !== undefined) {
+            recipeEdit.createdInDb = createdInDb;
+        }
+        if (diets && diets.length > 0) {
+            const dietIds = [];
+            for (const dietName of diets) {
+                const existingDiet = await Diet.findOne({ name: dietName });
+                if (existingDiet) {
+                    dietIds.push(existingDiet._id);
+                } else {
+                    console.log(`La dieta "${dietName}" no existe en la base de datos.`);
+                }
+            }
+            recipeEdit.diets = dietIds;
+        }
+
+        await recipeEdit.save();
+
+        return res.status(200).json({ message: 'Receta actualizada correctamente', recipe: recipeEdit });
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Error en el servidor' });
+    }
+};
+
+//DELETE "/RECIPE"
+const deleteRecipeById = async (req, res) => {
+    const { _id, id } = req.params;
+    const userId = req.user._id; 
+    try {
+        const recipeDelete = await Recipe.findOne({ $or: [{ _id }, { id }]});
+
+        if(!recipeDelete){
+            res.status(404).json({message: 'Receta no encontrada'});
+        }
+
+        if (req.user.isAdmin || recipeDelete.createdBy.equals(userId)) {
+            await recipeDelete.remove();
+            return res.status(200).json({ message: 'Receta eliminada correctamente' });
+        } else {
+            return res.status(403).json({ message: 'No tienes permiso para eliminar esta receta' });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Error en el servidor' });
+    }
+};
 
 module.exports = {
     getAllRecipes,
     getRecipeById,
     createNewRecipe,
+    editRecipe,
+    deleteRecipeById,
 }

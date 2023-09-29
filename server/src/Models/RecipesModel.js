@@ -25,6 +25,10 @@ const RecipeSchema = new mongoose.Schema({
         default: true,
         required: true,
     },
+    createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    },
 },
 {
     timestamps :true ,
