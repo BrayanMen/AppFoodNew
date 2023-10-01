@@ -180,25 +180,25 @@ const getLikesRecipes = asyncHandler(async (req, res) => {
 
 const addLikedRecipes = asyncHandler(async (req, res) => {
     try {
+        const {recipeId} = req.body;
+
         const userId = req.user._id;
-        const recipeId = req.recipe._id;
 
-        const [user, recipe] = await Promise.all([
-            User.findById(userId),
-            Recipe.findById(recipeId),
-        ]);
+        const user = await User.findById(userId);
 
-        if (!user || !recipe) {
-            res.status(404).json({ message: 'Usuario o receta no encontrada' });
+        if (!user) {
+            res.status(404).json({ message: 'Usuario no encontrado' });
             return;
+        }else{
+            const recipeLiked = user.likedRecipes.find((r)=>{
+                r.toString() === recipeId
+            });
+            if(recipeLiked){
+                res.status(400).json('Ya te gusta la receta')
+            }
         }
-
-        if (user.likedRecipes.includes(recipeId)) {
-            res.status(400).json({ message: 'Esta receta ya me gusta' });
-            return;
-        }
-        
-        user.likedRecipes.push(recipe);
+                
+        user.likedRecipes.push(recipeId);
         await user.save();
         res.status(200).json(user.likedRecipes)
     } catch (error) {

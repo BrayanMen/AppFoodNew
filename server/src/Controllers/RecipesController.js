@@ -8,17 +8,18 @@ const asyncHandler = require("express-async-handler");
 const getAllRecipes = asyncHandler(async (req, res, next) => {
     try {
         const { name, healthScore } = req.query;
-        const allInfo = await getAllInfo();
+        const filter = {};
 
-        if (!name && !healthScore) {
-            return res.status(200).send(allInfo)
+        if (name) {
+            filter.name = { $regex: new RegExp(name, "i") };
         }
-        const filteredData = allInfo.filter((recipe) => {
-            const lowerName = name ? name.toString().toLowerCase() : "";
-            const matchName = name ? recipe.name.toLowerCase().includes(lowerName) : true;
-            const matchHealthScore = healthScore ? recipe.health_score == healthScore : true;
-            return matchName && matchHealthScore;
-        });
+
+        if (healthScore) {
+            filter.health_score = healthScore;
+        }
+
+        const filteredData = await Recipe.find(filter);
+
         if (filteredData.length > 0) {
             return res.status(200).send(filteredData);
         } else {

@@ -27,8 +27,8 @@ router.post('/favorites', protect, addLikedRecipes);
 router.delete('/favorites', protect, deleteLikerecipes);
 
 //ADMIN
-router.get('/', protect, admin, getUsers);
-router.get('/:id', protect, admin, deleteUser);
+router.get('/admin', protect, admin, getUsers);
+router.get('/admin/:id', protect, admin, deleteUser);
 
 
 module.exports = router;

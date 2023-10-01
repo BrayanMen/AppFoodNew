@@ -9,80 +9,95 @@ const { API_KEY, API_KEY1, API_KEY2, API_KEY3, API_KEY4, API_KEY5, API_KEY6 } = 
 const apiKeys = [API_KEY5, API_KEY1, API_KEY2, API_KEY3, API_KEY4, API_KEY, API_KEY6];
 let currentApiKeyIndex = 0;
 
-// const fillDatabase = async () => {
-//     try {
-//         // Obtener datos de la API
-//         const apiData = await getApiData();
-
-//         // Obtener datos de DB
-//         const dbData = await getDbInfo();
-
-//         // Combinar datos de la API y DB
-//         const allData = apiData.concat(dbData);
-
-//         for (const data of allData) {
-//             const { id, name, image, summary, diets, health_score, step_by_step } = data;
-//             // const objectId = mongoose.Types.ObjectId(id);
-//             const existingRecipe = await Recipe.findById(new ObjectId(id));
-
-//             if (!existingRecipe) {
-//                 const existingRecipeByApiId = await Recipe.findOne({ id: id });
-//                 if (!existingRecipeByApiId) {
-
-//                     const dietReferences = await Diet.find({ name: { $in: diets } }).select('_id');
-//                     const dietIds = dietReferences.map(diet => diet._id);
-
-//                     const newRecipe = new Recipe({
-//                         name,
-//                         image,
-//                         summary,
-//                         diets: dietIds,
-//                         health_score,
-//                         step_by_step,
-//                     });
-//                     await newRecipe.save();
-//                 }
-//             }
-//         }
-//         console.log('Base de datos llenada exitosamente.');
-//     } catch (error) {
-//         console.error('Error al llenar la base de datos:', error);
-//     }
-// };
-
-const fillDietCollection = async (req, res) => {
-    const currentApiKey = apiKeys[currentApiKeyIndex];
+const fillDatabase = async () => {
     try {
         // Obtener datos de la API
-        const dietList = await axios.get(
-            `https://api.spoonacular.com/recipes/complexSearch?apiKey=${currentApiKey}&number=60&addRecipeInformation=true`
-        );
+        const apiData = await getApiData();
 
-        const dietsFromAPI = dietList.data?.results.map((d) => d.diets).flat(1);
+        // Obtener datos de DB
+        const dbData = await getDbInfo();
 
-        // Procesar y guardar en la base de datos solo las dietas que no existen aún
-        for (const dietName of dietsFromAPI) {
-            const existingDiet = await Diet.findOne({ name: dietName });
+        // Combinar datos de la API y DB
+        const allData = apiData.concat(dbData);
 
-            if (!existingDiet) {
-                const newDiet = new Diet({ name: dietName });
-                await newDiet.save();
+        for (const data of allData) {
+            const { id, name, image, summary, diets, health_score, step_by_step } = data;
+            // const objectId = mongoose.Types.ObjectId(id);
+            const existingRecipe = await Recipe.findOne({ name });
+
+            if (!existingRecipe) {
+                const existingRecipeByApiId = await Recipe.findOne({ id });
+
+                if (!existingRecipeByApiId) {
+                    const dietIds = [];
+
+                    for (const dietName of diets) {
+                        // Verificar si la dieta ya existe en la base de datos
+                        const existingDiet = await Diet.findOne({ name: dietName });
+
+                        if (existingDiet) {
+                            // Asignar el ID existente de la dieta
+                            dietIds.push(existingDiet._id);
+                        } else {
+                            // Crear una nueva dieta si no existe
+                            const newDiet = new Diet({ name: dietName });
+                            await newDiet.save();
+                            dietIds.push(newDiet._id);
+                        }
+                    }
+
+
+                    const newRecipe = new Recipe({
+                        name,
+                        image,
+                        summary,
+                        diets: dietIds,
+                        health_score,
+                        step_by_step,
+                    });
+                    await newRecipe.save();
+                }
             }
         }
-
-        console.log('Colección Diet llenada exitosamente.');
-    } catch (err) {
-        currentApiKeyIndex = (currentApiKeyIndex + 1) % apiKeys.length;
-        console.error('Error al llenar la colección Diet:', err.message);
+        console.log('Base de datos llenada exitosamente.');
+    } catch (error) {
+        console.error('Error al llenar la base de datos:', error);
     }
 };
+
+// const fillDietCollection = async (req, res) => {
+//     const currentApiKey = apiKeys[currentApiKeyIndex];
+//     try {
+//         // Obtener datos de la API
+//         const dietList = await axios.get(
+//             `https://api.spoonacular.com/recipes/complexSearch?apiKey=${currentApiKey}&number=60&addRecipeInformation=true`
+//         );
+
+//         const dietsFromAPI = dietList.data?.results.map((d) => d.diets).flat(1);
+
+//         // Procesar y guardar en la base de datos solo las dietas que no existen aún
+//         for (const dietName of dietsFromAPI) {
+//             const existingDiet = await Diet.findOne({ name: dietName });
+
+//             if (!existingDiet) {
+//                 const newDiet = new Diet({ name: dietName });
+//                 await newDiet.save();
+//             }
+//         }
+
+//         console.log('Colección Diet llenada exitosamente.');
+//     } catch (err) {
+//         currentApiKeyIndex = (currentApiKeyIndex + 1) % apiKeys.length;
+//         console.error('Error al llenar la colección Diet:', err.message);
+//     }
+// };
 
 const fetchDataAndFillDatabase = async () => {
     try {
         // Llenar colección Diet
-        // await fillDatabase();
+        await fillDatabase();
         // Llenar modelos de recetas
-        await fillDietCollection();
+        // await fillDietCollection();
 
         console.log('Base de datos llenada exitosamente.');
     } catch (error) {
@@ -92,6 +107,6 @@ const fetchDataAndFillDatabase = async () => {
 
 module.exports = {
     // fillDatabase,
-    fillDietCollection,
+    // fillDietCollection,
     fetchDataAndFillDatabase
 };

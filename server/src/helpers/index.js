@@ -11,7 +11,7 @@ let currentApiKeyIndex = 0;
 const getApiData = async () => {
     const currentApiKey = apiKeys[currentApiKeyIndex];
     try {
-        const apiUri = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${currentApiKey}&number=100&addRecipeInformation=true`)
+        const apiUri = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${currentApiKey}&number=300&addRecipeInformation=true`)
         // console.log(apiUri.data.results[0]);
         const apiInfo = apiUri.data.results.map((r) => {
             return {
@@ -93,7 +93,7 @@ const formatDiets = (json) => {
     const dbInfoWithDiets = dbInfoParsed.map(r => {
         return {
             ...r,
-            diets: r.diets.map(diet => diet.name[0].toUpperCase() + diet.name.slice(1)).join(', '),
+            diets: r.diets.map(diet => diet.name[0].toUpperCase() + diet.name.slice(1)),
         }
     })
     return dbInfoWithDiets
