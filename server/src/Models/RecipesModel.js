@@ -29,6 +29,12 @@ const RecipeSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     },
+    diets: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Diet',
+        },
+      ],
 },
 {
     timestamps :true ,

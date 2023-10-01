@@ -1,5 +1,5 @@
-require('dotenv').config()
 const server = require('./src/server.js');
+require('dotenv').config()
 // const { conn } = require('./src/db.js');
 
 const PORT = process.env.PORT || 3001;

@@ -1,22 +1,25 @@
 require('dotenv').config()
+const mongoose = require("mongoose");
 const axios = require("axios");
 const Recipe = require('../Models/RecipesModel');
 const Diet = require('../Models/DietModel');
 const { API_KEY, API_KEY1, API_KEY2, API_KEY3, API_KEY4, API_KEY5, API_KEY6 } = process.env;
 
-const apiKeys = [API_KEY, API_KEY1, API_KEY2, API_KEY3, API_KEY4, API_KEY5, API_KEY6];
+const apiKeys = [API_KEY3, API_KEY1, API_KEY2, API_KEY, API_KEY4, API_KEY5, API_KEY6];
 let currentApiKeyIndex = 0;
 
 const getApiData = async () => {
     const currentApiKey = apiKeys[currentApiKeyIndex];
     try {
         const apiUri = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${currentApiKey}&number=100&addRecipeInformation=true`)
+        // console.log(apiUri.data.results[0]);
         const apiInfo = apiUri.data.results.map((r) => {
             return {
+                id: r.id,
                 name: r.title,
                 image: r.image,
                 summary: r.summary,
-                diets: r.diets.map(diet => diet[0].toUpperCase() + diet.slice(1)).join(', '),
+                diets: r.diets.map(diet => diet[0].toUpperCase() + diet.slice(1)),
                 health_score: r.healthScore,
                 step_by_step: r.analyzedInstructions[0]?.steps.map((paso) => paso.step),
             }
@@ -57,24 +60,29 @@ const getIdInfoApi = async (id) => {
     const currentApiKey = apiKeys[currentApiKeyIndex];
     try {
         const response = await axios.get(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${currentApiKey}`);
-        return response.data;
+        return response;
     } catch (error) {
         currentApiKeyIndex = (currentApiKeyIndex + 1) % apiKeys.length;
         throw new Error(error.message);
     }
 };
 
-const getIdInfoDb = async (id) => {
+const getIdInfoDb = async (_id) => {
     try {
-        const recipe = Recipe.findById(id).populate({
-            path: 'diets',
-            select: "name",
-            model: Diet,
-        });
-        if (!recipe) {
-            throw new Error('Receta no encontrada')
+        if (mongoose.Types.ObjectId.isValid(_id)) {
+            // Realiza la búsqueda por _id
+            const recipe = await Recipe.findById(_id).populate({
+                path: 'diets',
+                select: 'name',
+                model: Diet,
+            });
+        
+            if (recipe) {
+                return recipe;
+            } else {
+             throw new Error({ message: 'Receta no encontrada' });
+            }
         }
-        return recipe;
     } catch (error) {
         throw new Error(error.message);
     }

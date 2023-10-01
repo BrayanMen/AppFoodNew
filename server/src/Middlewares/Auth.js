@@ -1,8 +1,9 @@
 const asyncHandler = require('express-async-handler');
+require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const User = require('../Models/UserModel');
 
-const JWT_SECRET = 'foodapp1';
+const JWT_SECRET = process.env.JWT_SECRET;
 
 const generateToken = (id) => {
     return jwt.sign({ id }, JWT_SECRET, {

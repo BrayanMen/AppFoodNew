@@ -1,7 +1,6 @@
-require('dotenv').config()
 const mongoose = require('mongoose');
-const MONGO_URI  = 'mongodb+srv://foodappnew:foodapp1@cluster1.69jajwv.mongodb.net/Cluster1?retryWrites=true&w=majority';
-
+const MONGO_URI  = process.env.MONGO_URI
+require('dotenv').config()
 
 const connectDB = async () => {
     try {

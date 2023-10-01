@@ -1,9 +1,11 @@
+const mongoose = require("mongoose");
 const Diet = require("../Models/DietModel");
 const Recipe = require("../Models/RecipesModel");
 const { getAllInfo, getIdInfoDb, getIdInfoApi, formatDiets } = require("../helpers");
+const asyncHandler = require("express-async-handler");
 
 //GETS "/RECIPES"
-const getAllRecipes = async (req, res, next) => {
+const getAllRecipes = asyncHandler(async (req, res, next) => {
     try {
         const { name, healthScore } = req.query;
         const allInfo = await getAllInfo();
@@ -26,42 +28,46 @@ const getAllRecipes = async (req, res, next) => {
         console.error(error);
         return res.status(500).json({ message: 'Error en el servidor' });
     }
-}
+})
 // "/RECIPES/:ID"
-const getRecipeById = async (req, res, next) => {
-    try {
-        const { id } = req.params
+const getRecipeById = asyncHandler(async (req, res, next) => {
+    try{
+    const { id } = req.params;
 
-        if (id.length > 12) {
-            const idDb = await getIdInfoDb(id);
-            if (idDb) {
-                res.status(200).send(idDb)
-            } else {
-                res.status(404).send({ message: "Error al obtener la receta" })
-            }
-        } else {
-            const idApi = await getIdInfoApi(id);
-            if (idApi.data.id) {
-                const recipeDetail = {
-                    id: idApi.data.id,
-                    name: idApi.data.title,
-                    image: idApi.data.image,
-                    summary: idApi.data.summary,
-                    diets: idApi.data.diets.map(diet => diet[0].toUpperCase() + diet.slice(1)).join(', '),
-                    health_score: idApi.data.healthScore,
-                    step_by_step: idApi.data.analyzedInstructions[0]?.steps.map((paso) => paso.step),
-                }
-                return res.status(200).json(recipeDetail);
-            } else {
-                return res.status(404).json({ message: 'Receta no encontrada' });
-            }
+    if (mongoose.Types.ObjectId.isValid(id)) {
+        // Búsqueda en la base de datos
+        const idDb = await getIdInfoDb(id);
+
+        if (idDb) {
+            return res.status(200).json(idDb);
         }
+    }
+
+    // Búsqueda en la API externa
+    const idApi = await getIdInfoApi(id);
+
+    if (idApi.data.id) {
+        const recipeDetail = {
+            id: idApi.data.id,
+            name: idApi.data.title,
+            image: idApi.data.image,
+            summary: idApi.data.summary,
+            diets: idApi.data.diets.map(diet => diet[0].toUpperCase() + diet.slice(1)),
+            health_score: idApi.data.healthScore,
+            step_by_step: idApi.data.analyzedInstructions[0]?.steps.map((paso) => paso.step),
+        };
+
+        return res.status(200).json(recipeDetail);
+    } else {
+        return res.status(404).json({ message: 'Receta no encontrada' });
+    }
     } catch (error) {
+        console.error(error);
         res.status(500).json({ message: 'Error en el servidor' });
     }
-}
+})
 //POST  protect "/RECIPE"
-const createNewRecipe = async (req, res, next) => {
+const createNewRecipe = asyncHandler(async (req, res, next) => {
     try {
         const {
             name,
@@ -84,12 +90,19 @@ const createNewRecipe = async (req, res, next) => {
 
         const imageValidate = image || "https://static.educalingo.com/img/en/800/food.jpg";
 
-        const recipeExist = await Recipe.findById({ $or: [{ name }, { _id: req.recipe._id || req.recipe.id }] })
+        const recipeIds = req.recipe ? [req.recipe._id, req.recipe.id] : [];
+        const recipeExist = await Recipe.findOne({
+            $or: [
+                { name },
+                { _id: { $in: recipeIds } }
+            ]
+        });
+
         if (recipeExist) {
-            res.status(400).send({ message: 'Ya existe esta receta' })
+            res.status(400).send({ message: 'Ya existe esta receta' });
         }
 
-        const newRecipes = new Recipe({
+        const newRecipes =  Recipe.create({
             name,
             summary,
             image: imageValidate,
@@ -103,7 +116,6 @@ const createNewRecipe = async (req, res, next) => {
             const dietIds = [];
             for (const dietName of diets) {
                 const existingDiet = await Diet.findOne({ name: dietName });
-                // let dietFormat = formatDiets(existingDiet)
                 if (existingDiet) {
                     dietIds.push(existingDiet._id);
                 } else {
@@ -113,18 +125,18 @@ const createNewRecipe = async (req, res, next) => {
             newRecipes.diets = dietIds;
         }
 
-        await newRecipes.save();
-
-        if (newRecipes) {
+       const recipeNew = (await newRecipes).save();
+        
+        if (recipeNew) {
             res.status(201).json({
-                _id: newRecipes.id,
-                name: newRecipes.name,
-                summary: newRecipes.summary,
-                image: newRecipes.image,
-                health_score: newRecipes.health_score,
-                step_by_step: newRecipes.step_by_step,
-                createdInDb: newRecipes.createdInDb,
-            })
+                _id: recipeNew._id,
+                name: recipeNew.name,
+                summary: recipeNew.summary,
+                image: recipeNew.image,
+                health_score: recipeNew.health_score,
+                step_by_step: recipeNew.step_by_step,
+                createdInDb: recipeNew.createdInDb,
+            });
         } else {
             return res.status(400).json({ message: 'Receta Invalida' });
         }
@@ -133,9 +145,9 @@ const createNewRecipe = async (req, res, next) => {
         console.error(error);
         return res.status(500).json({ message: 'Error en el servidor' });
     }
-}
+})
 //PUT  protect "/RECIPE/EDIT"
-const editRecipe = async (req, res, next) => {
+const editRecipe = asyncHandler(async (req, res, next) => {
     const { _id, id } = req.params;
     const {
         name,
@@ -190,20 +202,19 @@ const editRecipe = async (req, res, next) => {
         console.error(error);
         return res.status(500).json({ message: 'Error en el servidor' });
     }
-};
+});
 
 //DELETE protect "/RECIPE"
-const deleteRecipeById = async (req, res) => {
-    const { _id, id } = req.params;
-    const userId = req.user._id; 
+const deleteRecipeById = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const userId = req.user._id;
     try {
-        const recipeDelete = await Recipe.findOne({ $or: [{ _id }, { id }]});
+        const recipeDelete = await Recipe.findById(id);
 
-        if(!recipeDelete){
-            res.status(404).json({message: 'Receta no encontrada'});
+        if (!recipeDelete) {
+            return res.status(404).json({ message: 'Receta no encontrada' });
         }
 
-        // Verifica si el usuario es administrador o el creador de la receta
         if (req.user.isAdmin || recipeDelete.createdBy.equals(userId)) {
             await recipeDelete.remove();
             return res.status(200).json({ message: 'Receta eliminada correctamente' });
@@ -214,7 +225,8 @@ const deleteRecipeById = async (req, res) => {
         console.error(error);
         return res.status(500).json({ message: 'Error en el servidor' });
     }
-};
+});
+
 
 module.exports = {
     getAllRecipes,

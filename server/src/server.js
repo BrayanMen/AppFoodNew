@@ -31,7 +31,7 @@ server.use('/', routes);
 connectDB().then(() => {
   console.log('Conexión a la base de datos establecida.');
   // Llena la base de datos una vez
-  return fillDatabase();
+  return fillDatabase.fetchDataAndFillDatabase();
 })
 .then(() => {
   console.log('Base de datos inicializada correctamente.');
