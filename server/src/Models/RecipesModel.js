@@ -1,5 +1,19 @@
 const mongoose = require('mongoose');
 
+const reviewSchema= new mongoose.Schema({
+    userName:{type: String, require: true},
+    userImage:{type: String, },
+    rating:{type: Number, require: true},
+    comment:{type: String, require: true},
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        require: true,    }
+},
+{
+    timestamps: true,
+});
+
 const RecipeSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -35,6 +49,7 @@ const RecipeSchema = new mongoose.Schema({
           ref: 'Diet',
         },
       ],
+    reviews:[reviewSchema]
 },
 {
     timestamps :true ,

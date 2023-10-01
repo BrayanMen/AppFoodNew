@@ -3,7 +3,7 @@ const Diet = require("../Models/DietModel");
 const Recipe = require("../Models/RecipesModel");
 const { getAllInfo, getIdInfoDb, getIdInfoApi, formatDiets } = require("../helpers");
 const asyncHandler = require("express-async-handler");
-
+//Public
 //GETS "/RECIPES"
 const getAllRecipes = asyncHandler(async (req, res, next) => {
     try {
@@ -66,6 +66,8 @@ const getRecipeById = asyncHandler(async (req, res, next) => {
         res.status(500).json({ message: 'Error en el servidor' });
     }
 })
+
+//Private
 //POST  protect "/RECIPE"
 const createNewRecipe = asyncHandler(async (req, res, next) => {
     try {
@@ -209,17 +211,21 @@ const deleteRecipeById = asyncHandler(async (req, res) => {
     const { id } = req.params;
     const userId = req.user._id;
     try {
-        const recipeDelete = await Recipe.findById(id);
+        if (mongoose.Types.ObjectId.isValid(id)) {
+            const recipeDelete = await Recipe.findById(id).exec();
 
-        if (!recipeDelete) {
-            return res.status(404).json({ message: 'Receta no encontrada' });
-        }
+            if (!recipeDelete) {
+                return res.status(404).json({ message: 'Receta no encontrada' });
+            }
 
-        if (req.user.isAdmin || recipeDelete.createdBy.equals(userId)) {
-            await recipeDelete.remove();
-            return res.status(200).json({ message: 'Receta eliminada correctamente' });
+            if (req.user.isAdmin || recipeDelete.createdBy.equals(userId)) {
+                await recipeDelete.deleteOne();
+                return res.status(200).json({ message: 'Receta eliminada correctamente' });
+            } else {
+                return res.status(403).json({ message: 'No tienes permiso para eliminar esta receta' });
+            }
         } else {
-            return res.status(403).json({ message: 'No tienes permiso para eliminar esta receta' });
+            return res.status(400).json({ message: 'ID de receta no válido' });
         }
     } catch (error) {
         console.error(error);

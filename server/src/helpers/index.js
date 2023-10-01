@@ -5,7 +5,7 @@ const Recipe = require('../Models/RecipesModel');
 const Diet = require('../Models/DietModel');
 const { API_KEY, API_KEY1, API_KEY2, API_KEY3, API_KEY4, API_KEY5, API_KEY6 } = process.env;
 
-const apiKeys = [API_KEY3, API_KEY1, API_KEY2, API_KEY, API_KEY4, API_KEY5, API_KEY6];
+const apiKeys = [API_KEY6, API_KEY1, API_KEY2, API_KEY, API_KEY4, API_KEY5, API_KEY];
 let currentApiKeyIndex = 0;
 
 const getApiData = async () => {
@@ -27,7 +27,7 @@ const getApiData = async () => {
         return apiInfo
     } catch (error) {
         currentApiKeyIndex = (currentApiKeyIndex + 1) % apiKeys.length;
-        throw new Error(error.message);
+        throw new Error(error);
     }
 }
 
