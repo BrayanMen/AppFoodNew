@@ -1,6 +1,6 @@
 import React from 'react'
 import { diets } from '../data/recipes'
-import { FaRegCalendarAlt, FaHeart } from 'react-icons/fa'
+import { FaHeart } from 'react-icons/fa'
 
 function FlexRecipeItems({ recipe }) {
   const dietNames = recipe.diets.map((dietId) => {

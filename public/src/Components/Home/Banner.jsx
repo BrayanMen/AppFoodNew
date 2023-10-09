@@ -6,8 +6,6 @@ import FlexRecipeItems from '../FlexRecipeItems'
 import { Link } from 'react-router-dom'
 import { FaHeart } from 'react-icons/fa'
 
-
-
 function Banner() {
     return (
         <div className='relative w-full'>
