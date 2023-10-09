@@ -18,9 +18,10 @@ export default {
         xs: '475px'
       },
       colors:{
-        primary:'#17a2b8',
-        secondary:"#39c5d6",
+        primary:'#7ed957',
+        secondary:"#E22925",
         backgroundColor: '#fcfcfc',
+        main: '#000000',
       },
 
     },
