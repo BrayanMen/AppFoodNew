@@ -22,6 +22,8 @@ export default {
         secondary:"#E22925",
         backgroundColor: '#fcfcfc',
         main: '#000000',
+        blueP:' #769fb6',
+        greenP:' #32620e',      
       },
 
     },

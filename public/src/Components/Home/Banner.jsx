@@ -17,7 +17,7 @@ function Banner() {
                 speed={1000}
                 modules={[Autoplay]}
                 autoplay={{ delay: 5000, disableOnInteraction: true }}
-                className='w-full xl:h-96 bg-lime-600 lg:h-64 h-48'>
+                className='w-full xl:h-96 bg-greenP lg:h-64 h-48'>
                 {recipes.slice(0,6).map((r, index)=>(
                     <SwiperSlide key={index} className='relative rounded overflow-hidden'>
                         <img 
@@ -26,7 +26,7 @@ function Banner() {
                         className='w-full h-full object-cover'/>
                         <div 
                         className='absolute linear-bg xl:pl-52 sm:pl-32 pl-8 top-0 bottom-0 right-0 left-0 flex flex-col justify-center lg:gap-8 md:gap-5 gap-4'>
-                            <h1 className='xl:text-4xl truncate capitalize font-sans sm:text-2xl text-xl font-bold'>
+                            <h1 className='text-white xl:text-4xl truncate capitalize font-sans sm:text-2xl text-xl font-bold'>
                                 {r.name}
                             </h1>
                             <div className='flex gap-5 items-center text-gray-300'>
