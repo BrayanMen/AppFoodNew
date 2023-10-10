@@ -11,7 +11,9 @@ export const recipes = [
         "createdBy": "65144279b69cea12347958e1",
         "diets": ["65199da7920dce3a30909e71",
             "65199da7920dce3a30909e74",],
-        "reviews": [],
+        "reviews": {
+            "rating": 5
+        },
     },
     {
         "name": "Cannellini Bean and Asparagus Salad with Mushrooms",
@@ -36,7 +38,9 @@ export const recipes = [
             "65199da7920dce3a30909e77",
             "65199da7920dce3a30909e7a"
         ],
-        "reviews": [],
+        "reviews": {
+            "rating": 3.5
+        },
     },
     {
         "name": "Cauliflower, Brown Rice, and Vegetable Fried Rice",
@@ -61,7 +65,9 @@ export const recipes = [
             "65199da7920dce3a30909e77",
             "65199da7920dce3a30909e7a"
         ],
-        "reviews": [],
+        "reviews": {
+            "rating": 2
+        },
     },
     {
         "name": "Berry Banana Breakfast Smoothie",
@@ -76,7 +82,9 @@ export const recipes = [
         "diets": [
             "65199da7920dce3a30909e77"
         ],
-        "reviews": [],
+        "reviews": {
+            "rating": 0.5
+        },
     },
     {
         "name": "Red Lentil Soup with Chicken and Turnips",
@@ -95,7 +103,9 @@ export const recipes = [
             "65199da7920dce3a30909e71",
             "65199da7920dce3a30909e74"
         ],
-        "reviews": [],
+        "reviews": {
+            "rating": 4.5
+        },
     },
     {
         "name": "Asparagus and Pea Soup: Real Convenience Food",
@@ -117,7 +127,9 @@ export const recipes = [
             "65199da9920dce3a30909e9a",
             "65199da7920dce3a30909e7a"
         ],
-        "reviews": [],
+        "reviews":{
+            "rating": 2.5
+        },
     },
     {
         "name": "Garlicky Kale",
@@ -140,7 +152,9 @@ export const recipes = [
             "65199daa920dce3a30909ea7",
             "65199da7920dce3a30909e7a"
         ],
-        "reviews": [],
+        "reviews": {
+            "rating": 3.5
+        },
     },
 ]
 

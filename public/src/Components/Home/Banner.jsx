@@ -35,7 +35,7 @@ function Banner() {
                             <div className='flex gap-5 items-center'>
                                 <Link 
                                 to={`/recipe/${r.name}`} 
-                                className='bg-primary hover:text-lime-950 transitions text-white px-8 py-3 rounded font-medium sm:text-sm text-xs'>
+                                className='bg-primary bg-opacity-60  hover:text-greenP transitions text-white px-8 py-3 rounded font-medium sm:text-sm text-xs'>
                                     Ver Receta
                                 </Link>
                                 <button 

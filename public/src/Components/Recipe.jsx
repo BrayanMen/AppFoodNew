@@ -10,7 +10,7 @@ function Recipe({ recipe }) {
                 className='w-full'>
                     <img src={recipe?.image} alt={recipe?.name} className='w-full h-96 object-cover'/>
                 </Link>
-                <div className='absolute flex-btn gap-2 bottom-0 right-0 left-0 bg-lime-600 bg-opacity-60 text-white px-4 py-3'>
+                <div className='absolute flex-btn gap-2 bottom-0 right-0 left-0 bg-greenP bg-opacity-60 text-white px-4 py-3'>
                     <h3 className='font-semibold truncate'>
                         {recipe?.name}
                     </h3>
