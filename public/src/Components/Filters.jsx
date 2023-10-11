@@ -1,46 +1,47 @@
-import { useState } from "react";
-import { diets } from "../data/recipes";
+import { useState, useEffect } from 'react';
+import { diets } from '../data/recipes';
 
-function Filters({ onFilterChange }) {
-    const [selectedDiet, setSelectedDiet] = useState("all");
-    const [sortOrder, setSortOrder] = useState("asc");
-    const [sortByHealthScore, setSortByHealthScore] = useState(false);
-    const [sortByRating, setSortByRating] = useState(false);
+function Filters({ onFilterChange, filterOptions }) {
+    const [selectedDiet, setSelectedDiet] = useState(filterOptions.diet);
+    const [sortOrder, setSortOrder] = useState(filterOptions.sortOrder);
+    const [sortByHealthScore, setSortByHealthScore] = useState(filterOptions.sortByHealthScore);
+    const [sortByRating, setSortByRating] = useState(filterOptions.sortByRating);
+
+    useEffect(() => {
+        applyFilters();
+    }, [selectedDiet, sortOrder, sortByHealthScore, sortByRating]);
 
     const handleDietChange = (event) => {
         const newDiet = event.target.value;
         setSelectedDiet(newDiet);
-        applyFilters();
     };
 
     const handleSortOrderChange = (event) => {
         const newSortOrder = event.target.value;
         setSortOrder(newSortOrder);
-        applyFilters();
     };
 
     const handleHealthScoreChange = (event) => {
-        const newSortByHealthScore = event.target.checked;
+        const newSortByHealthScore = event.target.value;
         setSortByHealthScore(newSortByHealthScore);
-        applyFilters();
     };
 
     const handleRatingChange = (event) => {
-        const newSortByRating = event.target.checked;
+        const newSortByRating = event.target.value;
         setSortByRating(newSortByRating);
-        applyFilters();
     };
 
     const applyFilters = () => {
         // Construye un objeto con las opciones de filtro seleccionadas
-        const filterOptions = {
+        const options = {
             diet: selectedDiet,
             sortOrder,
             sortByHealthScore,
             sortByRating,
         };
+
         // Llama a la función proporcionada por onFilterChange con las opciones de filtro
-        onFilterChange(filterOptions);
+        onFilterChange(options);
     };
 
     return (
@@ -67,6 +68,7 @@ function Filters({ onFilterChange }) {
                     onChange={handleSortOrderChange}
                     value={sortOrder}
                 >
+                    <option value="all">No Filter</option>
                     <option value="asc">A - Z</option>
                     <option value="desc">Z - A</option>
                 </select>
@@ -74,22 +76,32 @@ function Filters({ onFilterChange }) {
             <div>
                 <label>
                     Sort by Health Score:
-                    <input
-                        type="checkbox"
-                        checked={sortByHealthScore}
-                        onChange={handleHealthScoreChange}
-                    />
                 </label>
+                <select
+                    id="healthScore"
+                    name="healthScore"
+                    onChange={handleHealthScoreChange}
+                    value={sortByHealthScore}
+                >
+                    <option value="all">No Filter</option>
+                    <option value="max">Max</option>
+                    <option value="min">Min</option>
+                </select>
             </div>
             <div>
                 <label>
                     Sort by Rating:
-                    <input
-                        type="checkbox"
-                        checked={sortByRating}
-                        onChange={handleRatingChange}
-                    />
                 </label>
+                <select
+                    id="rating"
+                    name="rating"
+                    onChange={handleRatingChange}
+                    value={sortByRating}
+                >
+                    <option value="all">No Filter</option>
+                    <option value="5">Max</option>
+                    <option value="1">Min</option>
+                </select>
             </div>
         </div>
     );
