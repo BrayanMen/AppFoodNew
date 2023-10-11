@@ -12,7 +12,11 @@ function RecipesPage() {
 
         // Aplicar filtro por dieta
         if (filterOptions.diet) {
-            filteredData = filteredData.filter(recipe => recipe.diets.includes(filterOptions.diet));
+            if(filterOptions === 'all'){
+             [...recipes]
+            }else{
+                filteredData = filteredData.filter(recipe => recipe.diets.includes(filterOptions.diet));
+            }
         }
 
         // Aplicar filtro por orden alfabético
@@ -41,7 +45,7 @@ function RecipesPage() {
                 <Filters onFilterChange={applyFilters} />
                 {filteredRecipes.map((recipe) => (
                     <div key={recipe.name} className="recipe-card">
-                        <img src={recipe.image} alt="" />
+                        <img src={recipe.image} alt={recipe.name} className='w-20 h-20'/>
                     </div>
                 ))}
             </div>

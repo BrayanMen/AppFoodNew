@@ -2,7 +2,7 @@ import { useState } from "react";
 import { diets } from "../data/recipes";
 
 function Filters({ onFilterChange }) {
-    const [selectedDiet, setSelectedDiet] = useState("");
+    const [selectedDiet, setSelectedDiet] = useState("all");
     const [sortOrder, setSortOrder] = useState("asc");
     const [sortByHealthScore, setSortByHealthScore] = useState(false);
     const [sortByRating, setSortByRating] = useState(false);
@@ -52,7 +52,7 @@ function Filters({ onFilterChange }) {
                     onChange={handleDietChange}
                     value={selectedDiet}
                 >
-                    <option value="">All Diets</option>
+                    <option value="all">All Diets</option>
                     {diets.map((diet) => (
                         <option key={diet._id} value={diet._id}>
                             {diet.name}
