@@ -19,7 +19,7 @@ function TopRecipes() {
       <div className='mt-10'>
         <Swiper
           navigation={{ next, prev }}
-          slidesPerView={3}
+          slidesPerView={2}
           spaceBetween={40}
           autoplay={true}
           speed={1000}

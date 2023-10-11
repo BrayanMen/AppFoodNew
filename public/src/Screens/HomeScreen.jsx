@@ -1,4 +1,3 @@
-import React from 'react'
 import Layout from '../Layouts/Layout'
 import Banner from '../Components/Home/Banner'
 import BestScoreRecipes from '../Components/Home/BestScoreRecipes'

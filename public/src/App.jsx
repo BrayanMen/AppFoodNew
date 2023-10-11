@@ -9,6 +9,7 @@ import FavoriteRecipes from './Screens/Dashboard/FavoriteRecipes'
 import Login from './Screens/Login'
 import Register from './Screens/Register'
 import Password from './Screens/Dashboard/Password'
+import RecipesPage from './Screens/Dashboard/Recipes'
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
     <>
     <Routes>
       <Route exact path='/' element={<HomeScreen />}/>
+      <Route path='/recipes' element={<RecipesPage/>}/>
       <Route path='/about-us' element={<AboutUs/>}/>
       <Route path='/contact-us' element={<ContactUs/>}/>
       <Route path='/login' element={<Login/>}/>

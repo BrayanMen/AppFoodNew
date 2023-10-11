@@ -2,12 +2,13 @@ import React from 'react'
 import Layout from '../Layouts/Layout'
 import Head from '../Components/Head'
 import food from '../assets/food.jpg'
+import aboutme from '../assets/Aboutme.jpg'
 
 function AboutUs() {
   return (
     <Layout>
       <div className='min-height-screen container mx-auto px-2 py-6'>
-        <Head title='Sobre mi' />
+        <Head title='Sobre mi' image={aboutme}/>
         <div className='xl:py-20 py-10 px-4'>
           <div className='grid grid-flow-row xl:grid-cols-2 gap-4 xl:gap-16 items-center'>
             <div>
