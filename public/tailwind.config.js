@@ -20,8 +20,6 @@ export default {
       colors:{
         primary:'#7ed957',
         secondary:"#E22925",
-        backgroundColor: '#fcfcfc',
-        main: '#000000',
         blueP:' #769fb6',
         greenP:' #32620e',      
       },

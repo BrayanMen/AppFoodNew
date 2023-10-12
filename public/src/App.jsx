@@ -9,7 +9,7 @@ import FavoriteRecipes from './Screens/Dashboard/FavoriteRecipes'
 import Login from './Screens/Login'
 import Register from './Screens/Register'
 import Password from './Screens/Dashboard/Password'
-import RecipesPage from './Screens/Dashboard/Recipes'
+import RecipesPage from './Screens/Recipes'
 
 
 function App() {

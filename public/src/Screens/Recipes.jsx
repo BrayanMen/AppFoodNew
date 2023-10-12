@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-import Filters from '../../Components/Filters';
-import Layout from '../../Layouts/Layout';
-import { recipes } from '../../data/recipes';
-import { FaStar } from 'react-icons/fa';
+import Filters from '../Components/Filters';
+import Layout from '../Layouts/Layout';
+import { recipes } from '../data/recipes';
+import { FaHeart, FaStar } from 'react-icons/fa';
+import Card from '../Components/Cards/Card';
+import Pagination from '../Components/Pagination';
 
 function RecipesPage() {
     const [filterOptions, setFilterOptions] = useState({
         diet: 'all',
-        sortOrder: 'asc',
+        sortOrder: 'all',
         sortByHealthScore: 'all',
-        sortByRating: '1', 
+        sortByRating: 'all',
     });
 
     const applyFilters = (options) => {
@@ -52,18 +54,29 @@ function RecipesPage() {
 
     const [filteredRecipes, setFilteredRecipes] = useState(() => applyFilters(filterOptions));
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage] = useState(3);
+
+    const paginate = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = filteredRecipes.slice(indexOfFirstItem, indexOfLastItem);
+
     return (
         <Layout>
-            <div className='min-h-screen container mx-auto px-2 py-6'>
+            <div className="min-h-screen items-center justify-center container mx-auto px-2 py-6">
                 <Filters onFilterChange={handleFilterChange} filterOptions={filterOptions} />
-                {filteredRecipes.map((recipe, n) => (
-                    <div key={recipe.name} className="">
-                        <p>{n + 1}{' '}{recipe.name}</p>
-                        <span>{recipe.health_score}%</span>
-                        <p>{recipe.reviews.rating}<FaStar className='text-yellow-500'/></p>
-                        <img src={recipe.image} alt={recipe.name} className='w-20 h-20' />
-                    </div>
-                ))}
+                <div className='md:w-3/5 flex-colo p-4 xs:w-full '>
+                    <div className='flex-rows  w-full '>
+                    {currentItems.map((recipe, index) => (
+                        <Card key={index} recipe={recipe} />
+                        ))}
+                </div>
+                    <Pagination itemsPerPage={itemsPerPage} totalItems={filteredRecipes.length} paginate={paginate} />
+                        </div>
             </div>
         </Layout>
     )
