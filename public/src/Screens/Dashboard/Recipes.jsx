@@ -60,8 +60,7 @@ function RecipesPage() {
                     <div key={recipe.name} className="">
                         <p>{n + 1}{' '}{recipe.name}</p>
                         <span>{recipe.health_score}%</span>
-                        <br />
-                        <span>{recipe.reviews.rating}</span><FaStar/>
+                        <p>{recipe.reviews.rating}<FaStar className='text-yellow-500'/></p>
                         <img src={recipe.image} alt={recipe.name} className='w-20 h-20' />
                     </div>
                 ))}

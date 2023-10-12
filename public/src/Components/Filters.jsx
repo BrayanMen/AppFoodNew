@@ -32,7 +32,6 @@ function Filters({ onFilterChange, filterOptions }) {
     };
 
     const applyFilters = () => {
-        // Construye un objeto con las opciones de filtro seleccionadas
         const options = {
             diet: selectedDiet,
             sortOrder,
@@ -40,7 +39,6 @@ function Filters({ onFilterChange, filterOptions }) {
             sortByRating,
         };
 
-        // Llama a la función proporcionada por onFilterChange con las opciones de filtro
         onFilterChange(options);
     };
 
