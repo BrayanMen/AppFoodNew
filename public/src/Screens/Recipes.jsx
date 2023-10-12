@@ -69,8 +69,8 @@ function RecipesPage() {
         <Layout>
             <div className="min-h-screen items-center justify-center container mx-auto px-2 py-6">
                 <Filters onFilterChange={handleFilterChange} filterOptions={filterOptions} />
-                <div className='md:w-3/5 flex-colo p-4 xs:w-full '>
-                    <div className='flex-rows  w-full '>
+                <div className='md:flex md:w-3/5 xs:flex-col justify-center flex-wrap'>
+                    <div className='flex sm:flex-row flex-col  w-full '>
                     {currentItems.map((recipe, index) => (
                         <Card key={index} recipe={recipe} />
                         ))}

@@ -17,7 +17,7 @@ function Card({ recipe }) {
 
 
     return (
-        <div key={recipe.name} className="mb-4 mx-4 sm:w-72 md:w-96 lg:w-72 xl:w-72 sm:h-64 md:h-64 lg:h-80 xl:h-80 border border-black rounded-lg shadow-md">
+        <div key={recipe.name} className="mb-4 mx-4 sm:w-72 md:w-96 lg:w-72 xl:w-72 sm:h-64 md:h-80 lg:h-80 xl:h-80 border border-black rounded-lg shadow-md">
             <div className="relative">
                 <img src={recipe.image} alt={recipe.name} className="w-full h-32 object-cover rounded-t-lg" />
                 <p className={`absolute flex flex-row right-0 bottom-0 p-2 font-semibold bg-white ${healthScoreColor(recipe)} bg-aqua border rounded-tl-lg`}>
