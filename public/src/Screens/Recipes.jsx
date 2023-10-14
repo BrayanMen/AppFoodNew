@@ -69,6 +69,9 @@ function RecipesPage() {
         <Layout>
             <div className="min-h-screen items-center justify-center container mx-auto px-2 py-6">
                 <Filters onFilterChange={handleFilterChange} filterOptions={filterOptions} />
+                <p className='text-lg font-medium my-6'>
+                    Total: <span className='font-bold text-blueP'>{recipes?.length}</span>
+                </p>
                 <div className='md:flex md:w-3/5 xs:flex-col justify-center flex-wrap'>
                     <div className='flex sm:flex-row flex-col  w-full '>
                     {currentItems.map((recipe, index) => (
