@@ -1,5 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import { diets } from '../data/recipes';
+import { Listbox, Transition } from '@headlessui/react'
+import { CheckIcon, ChevronDoubleDownIcon } from '@heroicons/react/24/solid'
 
 function Filters({ onFilterChange, filterOptions }) {
     const [selectedDiet, setSelectedDiet] = useState(filterOptions.diet);
@@ -43,62 +45,74 @@ function Filters({ onFilterChange, filterOptions }) {
     };
 
     return (
-        <div className="my-6 bg-primary text-black border-greenP grid md:grid-cols-4 grid-cols-2 lg:gap-12 gap-2 rounded-full p-6 items-center">
-            <div>
-                <label htmlFor="dietSelect">Select Diet: </label>
+        <div className="my-6 bg-primary text-black border-greenP grid md:grid-cols-4 grid-cols-2 lg:gap-6 gap-2 sm:rounded-full rounded-2xl p-6 ">
+            <div >
                 <select
                     id="dietSelect"
                     onChange={handleDietChange}
                     value={selectedDiet}
+                    className='relative border border-primary w-full text-white bg-greenP rounded-lg cursor-default py-3 pl-6 pr-10 text-left text-xs '
                 >
-                    <option value="all">All Diets</option>
+                    <option value="all"
+                        className='absolute z-10 mt-1 max-h-60 w-full  text-white ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>
+                        All Diets
+                    </option>
                     {diets.map((diet) => (
-                        <option key={diet._id} value={diet._id}>
+                        <option key={diet._id} value={diet._id}
+                            className=' z-10 mt-1 max-h-60 w-full  text-white ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>
                             {diet.name}
                         </option>
                     ))}
                 </select>
             </div>
             <div>
-                <label htmlFor="sortOrder">Sort Order: </label>
                 <select
                     id="sortOrder"
                     onChange={handleSortOrderChange}
                     value={sortOrder}
+                    className='relative border border-primary w-full  text-white bg-greenP rounded-lg cursor-default py-3 pl-6 pr-10 text-left text-xs '
                 >
-                    <option value="all">No Filter</option>
-                    <option value="asc">A - Z</option>
-                    <option value="desc">Z - A</option>
+                    <option value="all" disabled>Sort Order: </option>
+                    <option value="all"
+                    className='absolute z-10 mt-1 max-h-60 w-full  text-white ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>No Filter</option>
+                    <option value="asc"
+                    className='absolute z-10 mt-1 max-h-60 w-full  text-white ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>A - Z</option>
+                    <option value="desc"
+                    className='absolute z-10 mt-1 max-h-60 w-full  text-white ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>Z - A</option>
                 </select>
             </div>
             <div>
-                <label>
-                    Sort by Health Score:
-                </label>
                 <select
                     id="healthScore"
                     name="healthScore"
                     onChange={handleHealthScoreChange}
                     value={sortByHealthScore}
+                    className='relative border border-primary w-full text-white bg-greenP rounded-lg cursor-default py-3 pl-6 pr-10 text-left text-xs '
                 >
-                    <option value="all">No Filter</option>
-                    <option value="max">Max</option>
-                    <option value="min">Min</option>
+                    <option value="all" disabled>Health Score: </option>
+                    <option value="all"
+                    className='absolute z-10 mt-1 max-h-60 w-full  text-white ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>No Filter</option>
+                    <option value="max"
+                    className='absolute z-10 mt-1 max-h-60 w-full  text-white ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>Max</option>
+                    <option value="min"
+                    className='absolute z-10 mt-1 max-h-60 w-full  text-white ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>Min</option>
                 </select>
             </div>
             <div>
-                <label>
-                    Sort by Rating:
-                </label>
                 <select
                     id="rating"
                     name="rating"
                     onChange={handleRatingChange}
                     value={sortByRating}
+                    className='relative border border-primary w-full text-white bg-greenP rounded-lg cursor-default py-3 pl-6 pr-10 text-left text-xs '
                 >
-                    <option value="all">No Filter</option>
-                    <option value="5">Max</option>
-                    <option value="1">Min</option>
+                    <option value="all" disabled>Puntaje: </option>
+                    <option value="all"
+                    className='absolute z-10 mt-1 max-h-60 w-full  text-white ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>No Filter</option>
+                    <option value="5"
+                    className='absolute z-10 mt-1 max-h-60 w-full  text-white ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>Max</option>
+                    <option value="1"
+                    className='absolute z-10 mt-1 max-h-60 w-full  text-white ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>Min</option>
                 </select>
             </div>
         </div>

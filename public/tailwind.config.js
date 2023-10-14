@@ -21,7 +21,7 @@ export default {
         primary:'#7ed957',
         secondary:"#E22925",
         blueP:' #769fb6',
-        greenP:' #32620e',      
+        greenP:'#32620e',      
       },
 
     },

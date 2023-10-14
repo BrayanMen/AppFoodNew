@@ -1,8 +1,8 @@
 export const recipes = [
     {
-        "name": "Qk",
+        "name": "Comida",
         "image": "https://static.educalingo.com/img/en/800/food.jpg",
-        "summary": "Esta qk sabe a qk",
+        "summary": "Esta Comida sabe a Comida",
         "health_score": 50,
         "step_by_step": [
             "Haz una sopa y que sepa mal"
