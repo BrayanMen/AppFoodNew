@@ -1,7 +1,6 @@
-import { useState, useEffect, Fragment } from 'react';
+import { useState, useEffect } from 'react';
 import { diets } from '../data/recipes';
-import { Listbox, Transition } from '@headlessui/react'
-import { CheckIcon, ChevronDoubleDownIcon } from '@heroicons/react/24/solid'
+
 
 function Filters({ onFilterChange, filterOptions }) {
     const [selectedDiet, setSelectedDiet] = useState(filterOptions.diet);
