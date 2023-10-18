@@ -4,7 +4,7 @@ import Layout from '../Layouts/Layout';
 import { recipes } from '../data/recipes';
 import Card from '../Components/Cards/Card';
 import Pagination from '../Components/Pagination';
-// import ModalDetails from '../Components/Cards/ModalDetails';
+import ModalDetails from '../Components/Cards/ModalDetails';
 
 function RecipesPage() {
     const [filterOptions, setFilterOptions] = useState({
@@ -14,15 +14,15 @@ function RecipesPage() {
         sortByRating: 'all',
     });
 
-    // const [modalRecipe, setModalRecipe] = useState(null);
+    const [modalRecipe, setModalRecipe] = useState(null);
 
-    // const handleCardClick = (recipe) => {
-    //     setModalRecipe(recipe);
-    //   };
+    const handleCardClick = (recipe) => {
+        setModalRecipe(recipe);
+      };
     
-    //   const closeModal = () => {
-    //     setModalRecipe(null);
-    //   };
+      const closeModal = () => {
+        setModalRecipe(null);
+      };
 
     const applyFilters = (options) => {
         let filteredData = [...recipes];
@@ -82,17 +82,17 @@ function RecipesPage() {
                 <p className='text-lg font-medium my-6'>
                     Total: <span className='font-bold text-blueP'>{recipes?.length}</span>
                 </p>
-                <div className='md:flex md:w-1/2 xs:flex-col justify-center flex-wrap'>
+                <div className='md:flex md:w-3/5 xs:flex-col justify-center flex-wrap'>
                     <div className='flex sm:flex-row flex-col  w-full '>
                         {currentItems.map((recipe, index) => (
-                            <Card key={index} recipe={recipe}/>
+                            <Card key={index} recipe={recipe} handleCardClick={handleCardClick}/>
                         ))}
                     </div>
                     <Pagination itemsPerPage={itemsPerPage} totalItems={filteredRecipes.length} paginate={paginate} />
                 </div>
-                {/* <div className="w-3/4 p-4">
+                <div className="w-3/4 p-4">
                 {modalRecipe && <ModalDetails modalRecipe={modalRecipe} onClose={closeModal} />}
-                </div> */}
+                </div>
             </div>
         </Layout>
     )
