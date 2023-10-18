@@ -17,15 +17,20 @@ function FlexRecipeItems({ recipe }) {
     <>
       <div className='flex items-center gap-2'>
         <span className='text-sm font-medium'>
-          {dietNames.join(', ')}
+          {
+          dietNames.slice(0, dietNames.length).map((d, i) => (
+
+            <span key={i} className=''>{' | '}{d}</span>
+          ))
+          }
         </span>
       </div>
       <div className='flex items-center gap-2'>
-      {recipe.health_score &&<FaHeart  className={`${healthScoreColor()} w-5 h-5`}/>}
-        <span className='text-sm font-medium'>         
-            <span>                    
+        {recipe.health_score && <FaHeart className={`${healthScoreColor()} w-5 h-5`} />}
+        <span className='text-sm font-medium'>
+          <span>
             {recipe.health_score}%
-            </span>
+          </span>
         </span>
       </div>
     </>
