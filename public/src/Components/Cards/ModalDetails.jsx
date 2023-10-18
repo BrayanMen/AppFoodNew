@@ -1,6 +1,6 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
-import Layout from '../../Layouts/Layout';
+import { useState } from 'react';
 
 
 function ModalDetails({ modalRecipe, onClose }) {
@@ -9,8 +9,7 @@ function ModalDetails({ modalRecipe, onClose }) {
 
     const { name, image, summary, health_score, step_by_step } = modalRecipe;
     return (
-        <Layout>
-        <div className="fixed top-0 right-0 h-full w-1/2">
+        <div className="fixed top-0 right-0 h-fit w-2/5">
             <div className="bg-white w-full h-full p-4 rounded-lg shadow-lg">
                 <button
                     className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"
@@ -25,7 +24,7 @@ function ModalDetails({ modalRecipe, onClose }) {
                             className="w-full h-64 object-cover rounded-lg"
                         />
                     </div> */}
-                    <div className="w-1/2 p-4">
+                    <div className="w-full p-4">
                         <h2 className="text-2xl font-semibold">{name}</h2>
                         <p 
                         className="bg-greenP bg-opacity-75 p-2 rounded-lg text-white text-sm leading-7" 
@@ -57,7 +56,6 @@ function ModalDetails({ modalRecipe, onClose }) {
                 </div>
             </div>
         </div>
-        </Layout>
     )
 }
 
