@@ -7,7 +7,7 @@ import Recipe from '../Recipe'
 function BestScoreRecipes() {
   return (
     <div className='my-16'>
-      <Titles title='Recetas mas Sanas' Icon={FaBowlFood}/>
+      <Titles title='Healthier Recipes' Icon={FaBowlFood}/>
       <div className='grid sm:mt-12 mt-6 xl:grid-cols-3 lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-10'>
         {
           recipes.slice(0, 6).map((recipe, index)=>(

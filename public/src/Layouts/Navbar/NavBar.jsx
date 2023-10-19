@@ -15,7 +15,7 @@ function NavBar() {
           {/*Logo*/}
           <div className='col-span-1 lg:block hidden'>
             <Link to='/'>              
-                <img src={logo1} className='w-full h-12 object-contain' />             
+                <img src={logo1} className='w-full h-12 object-contain hover:scale-150' />            
             </Link>
           </div>
           {/*SearchBar*/}
@@ -31,13 +31,13 @@ function NavBar() {
           {/*Menu*/}
           <div className='col-span-3 font-medium text-sm hidden xl:gap-14 2xl:gap-20 justify-between lg:flex xl:justify-end items-center'>
             <NavLink to='/recipes' className={Hover}>
-              Recetas
+              Recipes
             </NavLink>
             <NavLink to='/about-us' className={Hover}>
-              Sobre Mi
+              About me
             </NavLink>
             <NavLink to='/contact-us' className={Hover}>
-              Contacto
+              Contact
             </NavLink>
             <NavLink to='/login' className={Hover}>
               <CgUser className='w-8 h-8' />

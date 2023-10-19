@@ -35,7 +35,7 @@ function Banner() {
                                 <Link 
                                 to={`/recipe/${r.name}`} 
                                 className='bg-primary bg-opacity-60  hover:text-greenP transitions text-white px-8 py-3 rounded font-medium sm:text-sm text-xs'>
-                                    Ver Receta
+                                    View Recipe
                                 </Link>
                                 <button 
                                 className='bg-white hover:text-secondary transitions text-white px-4 py-3 rounded text-sm bg-opacity-30'>

@@ -8,25 +8,25 @@ function Footer() {
       title:'Company',
       links:[
         {
-          name:'Inicio',
+          name:'Home',
           link: '/'
         },
         {
-          name:'Sobre Mi',
+          name:'About me',
           link: '/about-us'
         },
         {
-          name:'Contacto',
+          name:'Contact',
           link: '/contact-us'
         },
         {
-          name:'Recetas',
+          name:'Recipes',
           link: '/recipes'
         },
       ]
     },
     {
-      title:'Dietas',
+      title:'Diets',
       links:[
         {
           name:'Gluten free',
@@ -71,22 +71,22 @@ function Footer() {
       ]
     },
     {
-      title:'Mi Cuenta',
+      title:'My Profile',
       links:[
         {
           name:'Dashboard',
           link: '/dashboard'
         },
         {
-          name:'Mi Perfil',
+          name:'Profile',
           link: '/profile'
         },
         {
-          name:'Favoritos',
+          name:'Favorite',
           link: '/favorite'
         },
         {
-          name:'Cambio de Contraseña',
+          name:'Change Password',
           link: '/password'
         },
       ]

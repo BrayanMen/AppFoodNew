@@ -1,9 +1,10 @@
-import React from 'react'
+import ScrollToTop from '../Utils/ScrollTop'
 
 function NotFound() {
-  return (
-      
-    <div>NotFound</div>
+  return (      
+    <div>
+      <ScrollToTop/>
+    </div>
   )
 }
 

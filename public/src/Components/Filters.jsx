@@ -105,7 +105,7 @@ function Filters({ onFilterChange, filterOptions }) {
                     value={sortByRating}
                     className='relative border border-primary w-full text-white bg-greenP rounded-lg cursor-default py-3 pl-6 pr-10 text-left text-xs '
                 >
-                    <option value="all" disabled>Puntaje: </option>
+                    <option value="all" disabled>Score: </option>
                     <option value="all"
                     className='absolute z-10 mt-1 max-h-60 w-full  text-white ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>No Filter</option>
                     <option value="5"

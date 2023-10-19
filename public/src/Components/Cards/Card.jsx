@@ -1,7 +1,5 @@
-import { useState } from 'react'
 import { FaHeart, FaStar } from 'react-icons/fa'
-import ModalDetails from './ModalDetails.jsx';
-// import { Link } from 'react-router-dom';
+import Rating from '../Stars';
 
 function Card({ recipe, handleCardClick}) {
 
@@ -12,7 +10,7 @@ function Card({ recipe, handleCardClick}) {
     };
 
     return (
-        <div key={recipe.name} className="mb-4 mx-4 sm:w-72 md:w-96 lg:w-72 xl:w-72 sm:h-64 md:h-80 lg:h-80 xl:h-80  bg-primary bg-opacity-50 backdrop-blur-sm  z-10 rounded-lg shadow-md">
+        <div key={recipe.name} className="mb-4 mx-4 sm:w-72 md:w-96 lg:w-72 xl:w-72 sm:h-64 md:h-80 lg:h-80 xl:h-80  bg-primary bg-opacity-50 backdrop-blur-sm  z-10 rounded-lg shadow-md transitions hover:scale-125">
             <div className="relative">
                 <img src={recipe.image}
                     alt={recipe.name}
@@ -23,8 +21,8 @@ function Card({ recipe, handleCardClick}) {
                 </p>
             </div>
             <div className="flex flex-col p-4">
-                <p className="mt-0">{recipe.name}</p>
-                <span className='flex flex-row items-center'>{recipe.reviews.rating}<FaStar className="text-yellow-500" /></span>
+                <p className="mt-0 font-bold ">{recipe.name}</p>
+                <span className='flex flex-row p-1 gap-1 items-center text-yellow-500'><Rating value={recipe.reviews.rating}/></span>
             </div>
             
         </div >

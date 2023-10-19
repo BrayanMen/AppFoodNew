@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './App.css'
 import { Route, Routes } from 'react-router-dom'
 import HomeScreen from './Screens/HomeScreen'
@@ -13,24 +13,25 @@ import RecipesPage from './Screens/Recipes'
 import SingleRecipe from './Screens/SingleRecipe'
 
 
+
 function App() {
   return (
     <>
-    <Routes>
-      <Route path='/' element={<HomeScreen />}/>
-      <Route path='/recipes' element={<RecipesPage/>}/>
-      <Route path='/recipe/:id' element={<SingleRecipe/>}/>
-      <Route path='/about-us' element={<AboutUs/>}/>
-      <Route path='/contact-us' element={<ContactUs/>}/>
-      <Route path='/login' element={<Login/>}/>
-      <Route path='/register' element={<Register/>}/>
+      <Routes>  
+        <Route path='/' element={<HomeScreen />} />
+        <Route path='/recipes' element={<RecipesPage />} />
+        <Route path='/recipe/:id' element={<SingleRecipe />} />
+        <Route path='/about-us' element={<AboutUs />} />
+        <Route path='/contact-us' element={<ContactUs />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
 
-      <Route path='/profile' element={<Register/>}/>
-      <Route path='/favorite' element={<FavoriteRecipes/>}/>
-      <Route path='/password' element={<Password/>}/>
+        <Route path='/profile' element={<Register />} />
+        <Route path='/favorite' element={<FavoriteRecipes />} />
+        <Route path='/password' element={<Password />} />
 
-      <Route path='*' element={<NotFound/>}/>
-    </Routes>
+        <Route path='*' element={<NotFound />} />
+      </Routes>
     </>
   )
 }

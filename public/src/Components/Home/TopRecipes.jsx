@@ -14,7 +14,7 @@ function TopRecipes() {
 
   return (
     <div className='my-16'>
-      <Titles title='Top de Recetas' Icon={BsBookmarkStarFill} />
+      <Titles title='Top  Recipes' Icon={BsBookmarkStarFill} />
       <div className='mt-10'>
         <Swiper
           navigation={{ next, prev }}
