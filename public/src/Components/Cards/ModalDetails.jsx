@@ -9,7 +9,7 @@ function ModalDetails({ modalRecipe, onClose }) {
 
     const { name, image, summary, health_score, step_by_step } = modalRecipe;
     return (
-        <div className="fixed top-0 right-0 h-fit w-2/5">
+        <div className="fixed top-64 right-0 h-fit w-2/5">
             <div className="bg-white w-full h-full p-4 rounded-lg shadow-lg">
                 <button
                     className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"
@@ -17,13 +17,13 @@ function ModalDetails({ modalRecipe, onClose }) {
                     Cerrar
                 </button>
                 <div className="flex">
-                    {/* <div className="w-1/2 h-full">
+                    <div className="w-1/2 h-full">
                         <img
                             src={image}
                             alt={name}
                             className="w-full h-64 object-cover rounded-lg"
                         />
-                    </div> */}
+                    </div>
                     <div className="w-full p-4">
                         <h2 className="text-2xl font-semibold">{name}</h2>
                         <p 

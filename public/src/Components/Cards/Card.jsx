@@ -12,7 +12,7 @@ function Card({ recipe, handleCardClick}) {
     };
 
     return (
-        <div key={recipe.name} className="mb-4 mx-4 sm:w-72 md:w-96 lg:w-72 xl:w-72 sm:h-64 md:h-80 lg:h-80 xl:h-80 border border-black rounded-lg shadow-md">
+        <div key={recipe.name} className="mb-4 mx-4 sm:w-72 md:w-96 lg:w-72 xl:w-72 sm:h-64 md:h-80 lg:h-80 xl:h-80  bg-primary bg-opacity-50 backdrop-blur-sm  z-10 rounded-lg shadow-md">
             <div className="relative">
                 <img src={recipe.image}
                     alt={recipe.name}

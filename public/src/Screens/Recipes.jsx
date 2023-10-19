@@ -4,9 +4,16 @@ import Layout from '../Layouts/Layout';
 import { recipes } from '../data/recipes';
 import Card from '../Components/Cards/Card';
 import Pagination from '../Components/Pagination';
-import ModalDetails from '../Components/Cards/ModalDetails';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper/modules';
+import FlexRecipeItems from '../Components/FlexRecipeItems';
+import { Link } from 'react-router-dom';
 
 function RecipesPage() {
+    const [next, setNext] = useState(null);
+    const [prev, setPrev] = useState(null);
+
+
     const [filterOptions, setFilterOptions] = useState({
         diet: 'all',
         sortOrder: 'all',
@@ -18,11 +25,11 @@ function RecipesPage() {
 
     const handleCardClick = (recipe) => {
         setModalRecipe(recipe);
-      };
-    
-      const closeModal = () => {
+    };
+
+    const closeModal = () => {
         setModalRecipe(null);
-      };
+    };
 
     const applyFilters = (options) => {
         let filteredData = [...recipes];
@@ -77,22 +84,90 @@ function RecipesPage() {
 
     return (
         <Layout>
-            <div className="min-h-screen items-center justify-center container mx-auto px-2 py-6">
+            <div>
+                {modalRecipe ?
+                    (<div className='z-0'>
+                        <div className="md:w-full top-28 h-screen absolute text-black">
+                            <img src={modalRecipe?.image} alt={modalRecipe.name}
+                                className="w-full hidden xl:inline-block h-full z-0 " />
+                            {/* <div className=" bg-primary h-full flex-colo bg-opacity-40 xl:absolute top-0 left-0 right-0 bottom-0 ">
+                            </div> */}
+                        </div>
+                    </div>)
+                    :
+                    (null)
+                }
+            </div>
+            <div className=' bg-greenP bg-opacity-40'>
+            <div className="h-fit  items-center zIndex justify-center container mx-auto px-2 py-6">
                 <Filters onFilterChange={handleFilterChange} filterOptions={filterOptions} />
                 <p className='text-lg font-medium my-6'>
                     Total: <span className='font-bold text-blueP'>{recipes?.length}</span>
                 </p>
-                <div className='md:flex md:w-3/5 xs:flex-col justify-center flex-wrap'>
+                <div className='md:flex md:w-1/2 xs:flex-col justify-center xs:items-center flex-wrap'>
                     <div className='flex sm:flex-row flex-col  w-full '>
                         {currentItems.map((recipe, index) => (
-                            <Card key={index} recipe={recipe} handleCardClick={handleCardClick}/>
+                            <Card key={index} recipe={recipe} handleCardClick={handleCardClick} />
                         ))}
                     </div>
                     <Pagination itemsPerPage={itemsPerPage} totalItems={filteredRecipes.length} paginate={paginate} />
                 </div>
-                <div className="w-3/4 p-4">
-                {modalRecipe && <ModalDetails modalRecipe={modalRecipe} onClose={closeModal} />}
+                <div className="w-2/4 p-4">
+                    {modalRecipe ? (
+                        <div className="absolute top-24 items-center  right-0 h-fit md:w-2/4 w-full lg:z-0 z-50">
+                            <div className="border border-greenP bg-gray-400 bg-opacity-50 backdrop-blur-sm gap-4 w-full h-full p-4 rounded-lg shadow-lg">
+                                <button
+                                    className="absolute top-2 right-2 text-secondary hover:text-white bg-white hover:bg-secondary rounded-md px-2"
+                                    onClick={closeModal}>
+                                    Cerrar
+                                </button>
+                                <Link to={`/recipe/${modalRecipe?.name}`}>
+                                    <button
+                                        className="absolute top-2 right-20 text-greenP hover:text-white bg-white hover:bg-yellow-400 rounded-md px-2"
+                                    >
+                                        Expandir
+                                    </button>
+                                </Link>
+                                <div className="flex">
+                                    <div className="w-full p-4">
+                                        <h2 className="text-2xl font-semibold">{modalRecipe.name}</h2>
+                                        <p className='flex-rows gap-4 bg-greenP rounded-md bg-opacity-75 my-1 text-white'>
+                                            <FlexRecipeItems recipe={modalRecipe} />
+                                        </p>
+                                        <p
+                                            className="bg-greenP bg-opacity-75 p-2 rounded-lg text-white text-sm leading-7"
+                                            dangerouslySetInnerHTML={{ __html: modalRecipe.summary }}>
+                                        </p>
+                                        <h3>Steps:</h3>
+                                        <Swiper
+                                            navigation={{ next, prev }}
+                                            slidesPerView={1}
+                                            spaceBetween={40}
+                                            autoplay={true}
+                                            speed={2000}
+                                            loop={true}
+                                            modules={[Navigation]}
+                                            className='w-full xl:h-auto justify-center py-6 bg-greenP rounded-lg text-white bg-opacity-75 lg:h-32 '>
+                                            {modalRecipe.step_by_step.map((step, i) => (
+                                                <SwiperSlide key={i}>
+                                                    <div className="mx-6 px-6 py-2">
+                                                        <p className="items-center justify-center">
+                                                            <h2 className="font-bold">Step {i + 1}</h2>
+                                                            {step}
+                                                        </p>
+                                                    </div>
+                                                </SwiperSlide>
+                                            ))}
+                                        </Swiper>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )
+                        :
+                        null}
                 </div>
+            </div>
             </div>
         </Layout>
     )

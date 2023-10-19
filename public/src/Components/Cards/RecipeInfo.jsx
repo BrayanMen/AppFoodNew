@@ -17,7 +17,7 @@ function RecipeInfo({ recipe }) {
                     <div className="xl:col-span-1 w-full xl:order-none order-last xs:h-header h-64 bg-primary bg-opacity-60 border border-greenP rounded-lg overflow-hidden">
                         <img src={recipe?.image} alt={recipe.name} className="w-full h-full object-center" />
                     </div>
-                    <div className="col-span-2 md:grid grid-cols-5 gap-4 items-center">
+                    <div className="w-full col-span-2 md:grid grid-cols-5 gap-4 items-center">
                         <div className="xs:col-span-5 flex flex-col gap-10">
                             <h1 className="xs:text-4xl capitalize font-sans text-2xl font-bold">
                                 {recipe?.name}

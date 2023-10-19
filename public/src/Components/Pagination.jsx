@@ -10,7 +10,7 @@ function Pagination({ itemsPerPage, totalItems, paginate }) {
   return (
     <div className="pagination">
       {pageNumbers.map((number) => (
-        <button key={number} onClick={() => paginate(number)} className='border border-black gap-5 m-1 p-2'>
+        <button key={number} onClick={() => paginate(number)} className='bg-white hover:bg-greenP hover:text-white border border-greenP bg-opacity-50 backdrop-blur-sm rounded-lg gap-5 m-1 p-2'>
           {number}
         </button>
       ))}

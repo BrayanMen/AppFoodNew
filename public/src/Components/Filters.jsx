@@ -44,7 +44,7 @@ function Filters({ onFilterChange, filterOptions }) {
     };
 
     return (
-        <div className="my-6 bg-primary text-black border-greenP grid md:grid-cols-4 grid-cols-2 lg:gap-6 gap-2 sm:rounded-full rounded-2xl p-6 ">
+        <div className="my-6 bg-primary bg-opacity-50 backdrop-blur-sm text-black border-greenP grid md:grid-cols-4 grid-cols-2 lg:gap-6 gap-2 sm:rounded-full rounded-2xl p-6 ">
             <div >
                 <select
                     id="dietSelect"

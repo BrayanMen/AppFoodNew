@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Titles from '../Titles';
-import { BsBookmarkStarFill, BsCaretLeftFill, BsCaretRightFill } from 'react-icons/bs'
+import { BsBookmarkStarFill } from 'react-icons/bs'
 import { FaHeart } from 'react-icons/fa'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation } from 'swiper/modules';
@@ -12,7 +12,6 @@ function TopRecipes() {
   const [next, setNext] = useState(null);
   const [prev, setPrev] = useState(null);
 
-  const classNames = 'hover:bg-black transitions rounded text-sm w-8 h-8 flex-colo bg-secondary  text-white'
   return (
     <div className='my-16'>
       <Titles title='Top de Recetas' Icon={BsBookmarkStarFill} />
@@ -47,14 +46,6 @@ function TopRecipes() {
             ))
           }
         </Swiper>
-        <div className='w-full px-1 flex-rows gap-6 pt-12'>
-          <button className={classNames} ref={(node) => setPrev(node)}>
-            <BsCaretLeftFill />
-          </button>
-          <button className={classNames} ref={(node) => setNext(node)}>
-            <BsCaretRightFill />
-          </button>
-        </div>
       </div>
     </div>
   )
