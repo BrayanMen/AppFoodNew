@@ -92,8 +92,8 @@ function RecipesPage() {
                         <div className="md:w-full top-28 h-screen absolute text-black">
                             <img src={modalRecipe?.image} alt={modalRecipe.name}
                                 className="w-full hidden xl:inline-block h-full z-0 " />
-                            {/* <div className=" bg-primary h-full flex-colo bg-opacity-40 xl:absolute top-0 left-0 right-0 bottom-0 ">
-                            </div> */}
+                            <div className=" bg-gray-400 h-full flex-colo bg-opacity-40 xl:absolute top-0 left-0 right-0 bottom-0 ">
+                            </div>
                         </div>
                     </div>)
                     :

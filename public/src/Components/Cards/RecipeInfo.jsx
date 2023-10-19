@@ -12,7 +12,7 @@ function RecipeInfo({ recipe }) {
         <div className="w-full h-fit relative text-black">
             <img src={recipe?.image} alt={recipe.name}
                 className="w-full hidden xl:inline-block h-full object-cover filter blur-sm" />
-            <div className=" bg-primary h-full flex-colo bg-opacity-40 xl:absolute top-0 left-0 right-0 bottom-0 ">
+            <div className=" bg-white h-full flex-colo bg-opacity-40 xl:absolute top-0 left-0 right-0 bottom-0 ">
                 <div className="container px-3 mx-auto 2xl:px-32 xl:grid grid-cols-3 flex-colo md:py-10 gap-8">
                     <div className="xl:col-span-1 w-full xl:order-none order-last xs:h-header h-64 bg-primary bg-opacity-60 border border-greenP rounded-lg overflow-hidden">
                         <img src={recipe?.image} alt={recipe.name} className="w-full h-full object-center" />
