@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react'
 import './App.css'
 import { Route, Routes } from 'react-router-dom'
 import HomeScreen from './Screens/HomeScreen'
@@ -12,8 +11,6 @@ import Password from './Screens/Dashboard/Password'
 import RecipesPage from './Screens/Recipes'
 import SingleRecipe from './Screens/SingleRecipe'
 
-
-
 function App() {
   return (
     <>
@@ -23,6 +20,7 @@ function App() {
         <Route path='/recipe/:id' element={<SingleRecipe />} />
         <Route path='/about-us' element={<AboutUs />} />
         <Route path='/contact-us' element={<ContactUs />} />
+        
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
 

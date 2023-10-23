@@ -25,3 +25,16 @@ export const Select = ({ label, options, onChange }) => {
         </div>
     )
 }
+
+export const Input = ({ label, placeholder, type, bg }) => {
+    return (
+        <div className="text-sm w-full">
+            <label className="font-bold ">{label}</label>
+            <input required
+            type={type}
+            placeholder={placeholder}
+            className={`w-full text-sm mt-2 p-3 border border-primary text-white ${bg ? 'bg-green-900 bg-opacity-50' : 'bg-primary bg-opacity-50'} rounded`}
+            />
+        </div>
+    )
+}
