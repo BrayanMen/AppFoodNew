@@ -2,7 +2,6 @@ import { useParams } from 'react-router-dom'
 import RecipeInfo from '../Components/Cards/RecipeInfo.jsx'
 import { recipes } from '../data/recipes.jsx';
 import Layout from '../Layouts/Layout.jsx';
-import ScrollToTop from '../Utils/ScrollTop.jsx';
 import RecipeRate from '../Components/Cards/RecipeRate.jsx';
 import Titles from '../Components/Titles.jsx';
 import { BsCollectionFill } from 'react-icons/bs';
@@ -15,7 +14,6 @@ function SingleRecipe() {
 
   return (
     <Layout>
-      <ScrollToTop />
       <RecipeInfo recipe={recipe} />
       <div className='container m-auto min-h-screen my-6 px-2'>
         <RecipeRate recipe={recipe} />

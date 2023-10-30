@@ -1,4 +1,4 @@
-import { FaHeart, FaStar } from 'react-icons/fa'
+import { FaHeart } from 'react-icons/fa'
 import Rating from '../Stars';
 
 function Card({ recipe, handleCardClick}) {

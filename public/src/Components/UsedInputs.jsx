@@ -1,8 +1,8 @@
 export const Message = ({ label, placeholder }) => {
     return (
         <div className="text-sm w-full">
-            <label className="text-gray-800 font-semibold">{label}</label>
-            <textarea className="w-full h-40 mt-2 p-6 border border-primary text-white bg-greenP rounded"
+            <label className="text-white font-semibold">{label}</label>
+            <textarea className="w-full h-40 mt-2 p-6 border border-primary text-white bg-green-900 bg-opacity-50 rounded"
                 placeholder={placeholder}></textarea>
         </div>
     )
@@ -11,7 +11,7 @@ export const Message = ({ label, placeholder }) => {
 export const Select = ({ label, options, onChange }) => {
     return (
         <div>
-            <label className="font-bold ">{label}</label>
+            <label className="font-semibold ">{label}</label>
             <select onChange={onChange} className='relative border border-primary w-full text-white bg-greenP rounded-lg cursor-default py-3 pl-6 pr-10 text-left text-xs'>
                 {options.map((option, i) => (
                     (<option
@@ -29,7 +29,7 @@ export const Select = ({ label, options, onChange }) => {
 export const Input = ({ label, placeholder, type, bg }) => {
     return (
         <div className="text-sm w-full">
-            <label className="font-bold ">{label}</label>
+            <label className="font-semibold ">{label}</label>
             <input required
             type={type}
             placeholder={placeholder}

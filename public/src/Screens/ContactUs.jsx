@@ -2,7 +2,6 @@ import Layout from '../Layouts/Layout'
 import food from '../assets/food2.jpg'
 import Head from '../Components/Head'
 import { FiMail, FiMapPin, FiPhoneCall } from 'react-icons/fi'
-import ScrollToTop from '../Utils/ScrollTop'
 
 function ContactUs() {
   const contactData = [
@@ -30,7 +29,6 @@ function ContactUs() {
   ]
   return (
     <Layout>
-      <ScrollToTop/>
       <div className='min-height-screen container mx-auto px-2 py-6'>
         <Head title='Contacto' image={food} />
         <div className='grid mg:grid-cols-2 gap-5 lg:my-20 my-10 lg:grid-cols-3 xl:gap-8'>

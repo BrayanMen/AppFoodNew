@@ -8,7 +8,6 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import FlexRecipeItems from '../Components/FlexRecipeItems';
 import { Link } from 'react-router-dom';
-import ScrollToTop from '../Utils/ScrollTop';
 
 function RecipesPage() {
     const [next, setNext] = useState(null);
@@ -86,7 +85,6 @@ function RecipesPage() {
     return (
         <Layout>
             <div>
-            <ScrollToTop/>
                 {modalRecipe ?
                     (<div className='z-0'>
                         <div className="md:w-full top-28 h-screen absolute text-black">
