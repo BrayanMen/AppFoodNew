@@ -17,7 +17,7 @@ function ContactUs() {
       title: 'Llámanos',
       info: 'Aprovecha al máximo las alineaciones óptimas para lograr resultados intuitivos.',
       icon: FiPhoneCall,
-      contact: '+54 9 11 2730 0038',
+      contact: "https://wa.me/5491127300038",
     },
     {
       id: 3,
@@ -40,7 +40,7 @@ function ContactUs() {
                 </span>
                 <h3 className='text-xl font-semibold mb-2'>{e.title}</h3>
                 <p className='mb-0 text-sm text-gray-900 leading-7'>
-                  <a href={`mailto:${e.contact}`} className='text-blue-500'>{e.contact}</a>
+                  <a href={e.contact} className='text-blue-500'>{e.contact}</a>
                   <br />
                   <p className='font-semibold'> 
                   {e.info}
