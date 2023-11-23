@@ -18,8 +18,24 @@ function TopRecipes() {
       <div className='mt-10'>
         <Swiper
           navigation={{ next, prev }}
-          slidesPerView={2}
-          spaceBetween={40}
+          breakpoints={{
+            0: {
+              slidesPerView: 1,
+              spaceBetween: 10,
+            },
+            400: {
+              slidesPerView: 1,
+              spaceBetween: 10,
+            },
+            768: {
+              slidesPerView: 2,
+              spaceBetween: 20,
+            },
+            1024: {
+              slidesPerView: 3,
+              spaceBetween: 30,
+            },
+          }}
           autoplay={true}
           speed={1000}
           loop={true}
