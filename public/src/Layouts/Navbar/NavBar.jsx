@@ -6,7 +6,7 @@ import { CgUser } from 'react-icons/cg';
 
 function NavBar() {
   const hover = 'hover:text-secondary transitions text-white';
-  const Hover = ({ isActive }) => (isActive ? 'hover:text-secondary' : hover);
+  const Hover = ({ isActive }) => (isActive ? 'hover:text-secondary text-gray-300' : hover);
   return (
     <>
       <div className=" bg-greenP shadow-md sticky top-0 z-20">

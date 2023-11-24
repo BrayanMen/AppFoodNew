@@ -50,15 +50,15 @@ function Filters({ onFilterChange, filterOptions }) {
                     id="dietSelect"
                     onChange={handleDietChange}
                     value={selectedDiet}
-                    className='relative border border-primary w-full text-white bg-greenP rounded-lg cursor-default py-3 pl-6 pr-10 text-left text-xs '
+                    className='relative border  border-primary w-full text-white bg-greenP rounded-lg cursor-default py-3 pl-6 pr-10 text-left text-xs '
                 >
-                    <option value="all"
-                        className='absolute z-10 mt-1 max-h-60 w-full  text-white ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>
+                    <option value="all" 
+                        className='absolute z-10 mt-1 max-h-60 w-full text-white ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>
                         All Diets
                     </option>
                     {diets.map((diet) => (
                         <option key={diet._id} value={diet._id}
-                            className=' z-10 mt-1 max-h-60 w-full  text-white ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>
+                            className=' z-10 mt-1 max-h-60 w-full text-white ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>
                             {diet.name}
                         </option>
                     ))}

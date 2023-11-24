@@ -16,6 +16,10 @@ select:focus {
     box-shadow: none !important;
 }
 
+option{
+    border-radius: 1rem;
+}
+
 .linear-bg {
     background: linear-gradient(269.82deg, #07091c00 0.17%, #080a1ad6 99.87%);
 }
