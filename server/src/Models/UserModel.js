@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Recipe = require('./RecipesModel.js');
+// const Recipe = require('./RecipesModel.js');
 
 const UserSchema = new mongoose.Schema({
     fullName: {
@@ -30,7 +30,7 @@ const UserSchema = new mongoose.Schema({
     likedRecipes: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: Recipe,
+            ref: "Recipe",
         },
     ],
 },

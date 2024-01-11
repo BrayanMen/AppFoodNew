@@ -234,6 +234,39 @@ const deleteRecipeById = asyncHandler(async (req, res) => {
     }
 });
 
+//GET "/RECIPE/RATED/TOP"
+const getTopRecipes = asyncHandler(async (req, res, next) => {
+    try {
+        const recetasTop = await Recipe.find({}).sort({ 'reviews.rating': -1 }).limit(5); // Obtener las 5 recetas mejor valoradas basadas en reviews.rating
+
+        if (recetasTop.length > 0) {
+            return res.status(200).json(recetasTop);
+        } else {
+            return res.status(404).json({ message: 'No se encontraron recetas mejor valoradas' });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Error en el servidor' });
+    }
+});
+
+//GET "/RECIPE/RANDOM/all"
+const getRandomRecipes = asyncHandler(async (req, res, next) => {
+    try {
+        const recipesRandom = await Recipe.aggregate([
+            { $sample: { size: 5 } } // Obtener 5 recetas aleatorias
+        ]);
+
+        if (recipesRandom.length > 0) {
+            return res.status(200).json(recipesRandom);
+        } else {
+            return res.status(404).json({ message: 'No se encontraron recetas aleatorias' });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Error en el servidor' });
+    }
+});
 
 module.exports = {
     getAllRecipes,
@@ -241,4 +274,6 @@ module.exports = {
     createNewRecipe,
     editRecipe,
     deleteRecipeById,
+    getTopRecipes,
+    getRandomRecipes,
 }

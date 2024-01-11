@@ -1,4 +1,5 @@
 const asyncHandler = require('express-async-handler');
+const mongoose = require("mongoose");
 const User = require('../Models/UserModel');
 const Recipe = require('../Models/RecipesModel');
 const bcrypt = require('bcryptjs');
@@ -166,7 +167,7 @@ const changeUserPassword = asyncHandler(async (req, res) => {
 
 const getLikesRecipes = asyncHandler(async (req, res) => {
     try {
-        const user = User.findById(req.user._id).populate('likedRecipes');
+        const user = await User.findById(req.user._id);
         if (user) {
             res.json(user.likedRecipes);
         } else {
@@ -179,40 +180,43 @@ const getLikesRecipes = asyncHandler(async (req, res) => {
 });
 
 const addLikedRecipes = asyncHandler(async (req, res) => {
+    const { recipeId } = req.body;
     try {
-        const {recipeId} = req.body;
+        if (!recipeId) {
+            res.status(400).json({ message: 'RecipeId is required' });
+            return;
+        }
 
-        const userId = req.user._id;
-
-        const user = await User.findById(userId);
+        const user = await User.findById(req.user._id);
 
         if (!user) {
-            res.status(404).json({ message: 'Usuario no encontrado' });
+            res.status(404).json({ message: 'User not found' });
             return;
-        }else{
-            const recipeLiked = user.likedRecipes.find((r)=>{
-                r.toString() === recipeId
-            });
-            if(recipeLiked){
-                res.status(400).json('Ya te gusta la receta')
-            }
         }
-                
-        user.likedRecipes.push(recipeId);
+
+        const stringRecipeId = String(recipeId);
+
+        if (user.likedRecipes.includes(stringRecipeId)) {
+            res.status(400).json({ message: 'Recipe already liked' });
+            return;
+        }
+
+        user.likedRecipes.push(stringRecipeId);
         await user.save();
-        res.status(200).json(user.likedRecipes)
+
+        res.status(200).json(user.likedRecipes);
     } catch (error) {
-        res.status(400).json({ message: error.message })
+        res.status(500).json({ message: 'Internal server error', error: error.message });
     }
 });
 
 const deleteLikerecipes = asyncHandler(async (req, res) => {
     try {
-        const user = User.findById(req.user._id)
+        const user = await User.findById(req.user._id)
         if (user) {
             user.likedRecipes = [];
-            user.save();
-            res.status(200).json('Recetas favoritas eliminadas');
+            await user.save();
+            res.json('Recetas favoritas eliminadas:');
         } else {
             res.status(404).json('Recetas no encontradas');
         }
@@ -225,7 +229,7 @@ const deleteLikerecipes = asyncHandler(async (req, res) => {
 
 const getUsers = asyncHandler(async (req, res) => {
     try {
-        const users = User.find({});
+        const users = await User.find({});
         if (users) {
             res.status(200).send(users)
         }
