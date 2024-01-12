@@ -32,41 +32,75 @@ const getAllRecipes = asyncHandler(async (req, res, next) => {
 })
 // "/RECIPES/:ID"
 const getRecipeById = asyncHandler(async (req, res, next) => {
-    try{
-    const { id } = req.params;
+    try {
+        const { id } = req.params;
 
-    if (mongoose.Types.ObjectId.isValid(id)) {
-        // Búsqueda en la base de datos
-        const idDb = await getIdInfoDb(id);
+        if (mongoose.Types.ObjectId.isValid(id)) {
+            // Búsqueda en la base de datos
+            const idDb = await getIdInfoDb(id);
 
-        if (idDb) {
-            return res.status(200).json(idDb);
+            if (idDb) {
+                return res.status(200).json(idDb);
+            }
         }
-    }
 
-    // Búsqueda en la API externa
-    const idApi = await getIdInfoApi(id);
+        // Búsqueda en la API externa
+        const idApi = await getIdInfoApi(id);
 
-    if (idApi.data.id) {
-        const recipeDetail = {
-            id: idApi.data.id,
-            name: idApi.data.title,
-            image: idApi.data.image,
-            summary: idApi.data.summary,
-            diets: idApi.data.diets.map(diet => diet[0].toUpperCase() + diet.slice(1)),
-            health_score: idApi.data.healthScore,
-            step_by_step: idApi.data.analyzedInstructions[0]?.steps.map((paso) => paso.step),
-        };
+        if (idApi.data.id) {
+            const recipeDetail = {
+                id: idApi.data.id,
+                name: idApi.data.title,
+                image: idApi.data.image,
+                summary: idApi.data.summary,
+                diets: idApi.data.diets.map(diet => diet[0].toUpperCase() + diet.slice(1)),
+                health_score: idApi.data.healthScore,
+                step_by_step: idApi.data.analyzedInstructions[0]?.steps.map((paso) => paso.step),
+            };
 
-        return res.status(200).json(recipeDetail);
-    } else {
-        return res.status(404).json({ message: 'Receta no encontrada' });
-    }
+            return res.status(200).json(recipeDetail);
+        } else {
+            return res.status(404).json({ message: 'Receta no encontrada' });
+        }
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Error en el servidor' });
     }
 })
+
+//GET "/RECIPE/RATED/TOP"
+const getTopRecipes = asyncHandler(async (req, res, next) => {
+    try {
+        const recetasTop = await Recipe.find({}).sort({ 'reviews.rating': -1 }).limit(5); // Obtener las 5 recetas mejor valoradas basadas en reviews.rating
+
+        if (recetasTop.length > 0) {
+            return res.status(200).json(recetasTop);
+        } else {
+            return res.status(404).json({ message: 'No se encontraron recetas mejor valoradas' });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Error en el servidor' });
+    }
+});
+
+//GET "/RECIPE/RANDOM/all"
+const getRandomRecipes = asyncHandler(async (req, res, next) => {
+    try {
+        const recipesRandom = await Recipe.aggregate([
+            { $sample: { size: 5 } } // Obtener 5 recetas aleatorias
+        ]);
+
+        if (recipesRandom.length > 0) {
+            return res.status(200).json(recipesRandom);
+        } else {
+            return res.status(404).json({ message: 'No se encontraron recetas aleatorias' });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Error en el servidor' });
+    }
+});
 
 //Private
 //POST  protect "/RECIPE"
@@ -105,7 +139,7 @@ const createNewRecipe = asyncHandler(async (req, res, next) => {
             res.status(400).send({ message: 'Ya existe esta receta' });
         }
 
-        const newRecipes =  Recipe.create({
+        const newRecipes = Recipe.create({
             name,
             summary,
             image: imageValidate,
@@ -128,8 +162,8 @@ const createNewRecipe = asyncHandler(async (req, res, next) => {
             newRecipes.diets = dietIds;
         }
 
-       const recipeNew = (await newRecipes).save();
-        
+        const recipeNew = (await newRecipes).save();
+
         if (recipeNew) {
             res.status(201).json({
                 _id: recipeNew._id,
@@ -234,39 +268,38 @@ const deleteRecipeById = asyncHandler(async (req, res) => {
     }
 });
 
-//GET "/RECIPE/RATED/TOP"
-const getTopRecipes = asyncHandler(async (req, res, next) => {
+//POST PROTECT /REVIEWS
+const createReviewRecipe = asyncHandler(async (req, res) => {
+    const { _id, id } = req.params;
+    const {rating, comment} = req.body;
     try {
-        const recetasTop = await Recipe.find({}).sort({ 'reviews.rating': -1 }).limit(5); // Obtener las 5 recetas mejor valoradas basadas en reviews.rating
-
-        if (recetasTop.length > 0) {
-            return res.status(200).json(recetasTop);
-        } else {
-            return res.status(404).json({ message: 'No se encontraron recetas mejor valoradas' });
+        const recipeReview = await Recipe.findById(_id || id);
+        if (recipeReview) {
+            const alreadyReview = recipeReview.reviews.find(
+                (r) => r.userId.toString() === req.user._id.toString()
+            );
+            if (alreadyReview) {
+                res.status(400).json('You already reviews this movie')
+            }
+            const review = {
+                userName: req.user.fullname,
+                userImage: req.user.image,
+                userId: req.user._id,
+                rating: Number(rating),
+                comment,
+            }
+            recipeReview.reviews.push(review)
+            recipeReview.numberOfReview = recipeReview.reviews.length
+            
         }
+
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: 'Error en el servidor' });
+
     }
+
 });
 
-//GET "/RECIPE/RANDOM/all"
-const getRandomRecipes = asyncHandler(async (req, res, next) => {
-    try {
-        const recipesRandom = await Recipe.aggregate([
-            { $sample: { size: 5 } } // Obtener 5 recetas aleatorias
-        ]);
 
-        if (recipesRandom.length > 0) {
-            return res.status(200).json(recipesRandom);
-        } else {
-            return res.status(404).json({ message: 'No se encontraron recetas aleatorias' });
-        }
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: 'Error en el servidor' });
-    }
-});
 
 module.exports = {
     getAllRecipes,
