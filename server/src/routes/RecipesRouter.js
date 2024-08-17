@@ -6,7 +6,8 @@ const {
     editRecipe,
     getTopRecipes,
     getRandomRecipes, 
-    deleteRecipeById 
+    deleteRecipeById,
+    createReviewRecipe, 
 } = require('../Controllers/RecipesController');
 const { protect } = require('../Middlewares/Auth');
 const router = Router();
@@ -19,8 +20,9 @@ router.get('/rated/top', getTopRecipes);
 
 //PRIVATE
 router.post('/create', protect, createNewRecipe);
+router.post('/:id/reviews', protect, createReviewRecipe);
 router.put('/edit/:id', protect, editRecipe);
-router.delete('/:id', protect, deleteRecipeById)
+router.delete('/:id', protect, deleteRecipeById);
 
 
 

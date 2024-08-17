@@ -271,6 +271,9 @@ const deleteRecipeById = asyncHandler(async (req, res) => {
 //POST PROTECT /REVIEWS
 const createReviewRecipe = asyncHandler(async (req, res) => {
     const { _id, id } = req.params;
+    if(!_id && !id){
+        return res.status(400).send('ID is required')
+    }
     const {rating, comment} = req.body;
     try {
         const recipeReview = await Recipe.findById(_id || id);
@@ -279,10 +282,10 @@ const createReviewRecipe = asyncHandler(async (req, res) => {
                 (r) => r.userId.toString() === req.user._id.toString()
             );
             if (alreadyReview) {
-                res.status(400).json('You already reviews this movie')
+                res.status(400).json('You already reviews this recipe')
             }
             const review = {
-                userName: req.user.fullname,
+                userName: req.user.fullName,
                 userImage: req.user.image,
                 userId: req.user._id,
                 rating: Number(rating),
@@ -291,15 +294,20 @@ const createReviewRecipe = asyncHandler(async (req, res) => {
             recipeReview.reviews.push(review)
             recipeReview.numberOfReview = recipeReview.reviews.length
             
+            recipeReview.rate =
+            recipeReview.reviews.reduce((acum, item)=> item.rating + acum, 0) /
+            recipeReview.reviews.length;
+
+            await recipeReview.save();
+            
+            res.status(201).send('Review Added')
+        } else {
+            res.status(404).send('Movie not found');
         }
-
     } catch (error) {
-
+        res.status(400).send(error.message)
     }
-
 });
-
-
 
 module.exports = {
     getAllRecipes,
@@ -309,4 +317,5 @@ module.exports = {
     deleteRecipeById,
     getTopRecipes,
     getRandomRecipes,
+    createReviewRecipe,
 }

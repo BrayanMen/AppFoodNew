@@ -1,13 +1,8 @@
 const Recipe = require("../Models/RecipesModel");
 const mongoose = require("mongoose");
-const ObjectId = mongoose.Types.ObjectId;
-const axios = require("axios");
 const { getApiData, getDbInfo } = require(".");
 const Diet = require("../Models/DietModel");
-const { API_KEY, API_KEY1, API_KEY2, API_KEY3, API_KEY4, API_KEY5, API_KEY6 } = process.env;
 
-const apiKeys = [API_KEY5, API_KEY1, API_KEY2, API_KEY3, API_KEY4, API_KEY, API_KEY6];
-let currentApiKeyIndex = 0;
 
 const fillDatabase = async () => {
     try {

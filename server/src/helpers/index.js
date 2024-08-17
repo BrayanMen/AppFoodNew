@@ -5,14 +5,13 @@ const Recipe = require('../Models/RecipesModel');
 const Diet = require('../Models/DietModel');
 const { API_KEY, API_KEY1, API_KEY2, API_KEY3, API_KEY4, API_KEY5, API_KEY6 } = process.env;
 
-const apiKeys = [API_KEY6, API_KEY1, API_KEY2, API_KEY, API_KEY4, API_KEY5, API_KEY3];
+let apiKeys = [API_KEY6, API_KEY1, API_KEY2, API_KEY, API_KEY4, API_KEY5, API_KEY3];
 let currentApiKeyIndex = 0;
 
 const getApiData = async () => {
     const currentApiKey = apiKeys[currentApiKeyIndex];
     try {
-        const apiUri = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${currentApiKey}&number=300&addRecipeInformation=true`)
-        // console.log(apiUri.data.results[0]);
+        const apiUri = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${currentApiKey}&number=300&addRecipeInformation=true&instructionsRequired=true`)
         const apiInfo = apiUri.data.results.map((r) => {
             return {
                 id: r.id,

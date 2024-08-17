@@ -50,6 +50,11 @@ const RecipeSchema = new mongoose.Schema({
             ref: 'Diet',
         },
     ],
+    rate: {
+        type: Number,
+        require: true,
+        default: 0
+    },
     numberOfReview: {
         type: Number,
         require: true,
