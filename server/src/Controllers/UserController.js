@@ -167,7 +167,7 @@ const changeUserPassword = asyncHandler(async (req, res) => {
 
 const getLikesRecipes = asyncHandler(async (req, res) => {
     try {
-        const user = await User.findById(req.user._id);
+        const user = await User.findById(req.user._id).populate("likedRecipes");
         if (user) {
             res.json(user.likedRecipes);
         } else {

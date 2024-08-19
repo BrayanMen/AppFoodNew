@@ -12,7 +12,7 @@ export const recipes = [
         "diets": ["65199da7920dce3a30909e71",
             "65199da7920dce3a30909e74",],
         "reviews": {
-            "rating": 5
+            "rating": 7
         },
     },
     {

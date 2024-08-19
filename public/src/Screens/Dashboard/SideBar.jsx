@@ -23,12 +23,12 @@ function SideBar({ children }) {
       icon: BsFillGridFill,
     },
     {
-      name: 'Recipe List',
-      link: '/recipelist',
+      name: 'Top Tatuajes',
+      link: '/dashboard/toptattoo',
       icon: FaListAlt,
     },{
-      name: 'Diets',
-      link: '/diets',
+      name: 'Carrusel',
+      link: '/dashboard/carrousel',
       icon: GiCookingPot,
     },
     {
@@ -70,7 +70,7 @@ function SideBar({ children }) {
           ))}
           </div>
           <div 
-          data-aos='fade-left' 
+          data-aos='fade-left'  
           data-aos-duration='1000'
           data-aos-delay='10'
           data-aos-offset='20'
